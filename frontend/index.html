@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe Search</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #faf7f2;
+      color: #2c2c2c;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #c0392b;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      color: #666;
+      margin-top: 0.4rem;
+      font-size: 1rem;
+    }
+
+    .search-box {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 0.85rem 1.1rem;
+      font-size: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fff;
+    }
+
+    .search-box input:focus {
+      border-color: #c0392b;
+    }
+
+    .search-box button {
+      padding: 0.85rem 1.5rem;
+      font-size: 1rem;
+      background: #c0392b;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .search-box button:hover { background: #a93226; }
+    .search-box button:disabled { background: #e0a09a; cursor: not-allowed; }
+
+    .examples {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #888;
+      text-align: center;
+    }
+
+    .examples span {
+      cursor: pointer;
+      text-decoration: underline dotted;
+      margin: 0 0.3rem;
+    }
+
+    .examples span:hover { color: #c0392b; }
+
+    #result-area {
+      width: 100%;
+      max-width: 680px;
+      margin-top: 2rem;
+    }
+
+    .loading {
+      text-align: center;
+      color: #888;
+      font-size: 0.95rem;
+      padding: 2rem;
+    }
+
+    .error-box {
+      background: #fdecea;
+      border: 1px solid #f5c2be;
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      color: #c0392b;
+      font-size: 0.95rem;
+    }
+
+    .recipe-card {
+      background: #fff;
+      border: 1px solid #e8e2d9;
+      border-radius: 12px;
+      padding: 1.6rem 1.8rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      font-size: 0.97rem;
+    }
+
+    .recipe-card + .recipe-card {
+      margin-top: 1.2rem;
+    }
+
+    .recipe-card .card-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #c0392b;
+      margin-bottom: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Recipe Search</h1>
+    <p>Describe what you have, what you want, or what you're avoiding.</p>
+  </header>
+
+  <div class="search-box">
+    <input id="query-input" type="text" placeholder="e.g. quick pasta with chicken, no dairy, under 30 minutes" />
+    <button id="search-btn" onclick="runSearch()">Search</button>
+  </div>
+
+  <div class="examples">
+    Try:
+    <span onclick="fillExample('I have chicken, garlic and tomatoes, no gluten')">chicken garlic tomatoes no gluten</span>
+    <span onclick="fillExample('vegetarian dinner under 20 minutes')">vegetarian under 20 min</span>
+    <span onclick="fillExample('something with salmon and lemon, healthy')">salmon lemon healthy</span>
+  </div>
+
+  <div id="result-area"></div>
+
+  <script>
+    const input = document.getElementById("query-input");
+    const btn = document.getElementById("search-btn");
+    const resultArea = document.getElementById("result-area");
+
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") runSearch();
+    });
+
+    function fillExample(text) {
+      input.value = text;
+      input.focus();
+    }
+
+    async function runSearch() {
+      const query = input.value.trim();
+      if (!query) return;
+
+      btn.disabled = true;
+      resultArea.innerHTML = `<div class="loading">Searching for the perfect recipe...</div>`;
+
+      try {
+        const res = await fetch("/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query }),
+        });
+        const data = await res.json();
+
+        if (data.error) {
+          resultArea.innerHTML = `<div class="error-box">${escapeHtml(data.error)}</div>`;
+        } else {
+          const labels = ["Best match", "Option 2", "Option 3"];
+          resultArea.innerHTML = data.results.map((r, i) =>
+            `<div class="recipe-card"><div class="card-label">${labels[i] || `Option ${i + 1}`}</div>${escapeHtml(r)}</div>`
+          ).join("");
+        }
+      } catch (err) {
+        resultArea.innerHTML = `<div class="error-box">Could not connect to the server. Is the backend running?</div>`;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+  </script>
+</body>
+</html>
