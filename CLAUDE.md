@@ -58,6 +58,14 @@ Gemini reformats the best recipe nicely for the user
 - No placeholders — always write fully working code
 - Chat in Polish, code and comments in English
 
+## Engineering Mindset
+
+Act as a senior software engineer, not a code generator. Before implementing a request:
+- Check constraints and dependencies (platform limits, library support, file sizes, costs)
+- If an assumption is wrong or a better approach exists — say so before writing code
+- Flag trade-offs explicitly: "this works but has X downside, alternative is Y"
+- Never blindly execute instructions that will obviously fail or create problems downstream
+
 ---
 
 ## Code Style

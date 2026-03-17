@@ -178,11 +178,12 @@
       resultArea.innerHTML = `<div class="loading">Searching for the perfect recipe...</div>`;
 
       try {
-        const res = await fetch("/search", {
+        const res = await fetch("http://localhost:8000/search", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ query }),
         });
+
         const data = await res.json();
 
         if (data.error) {

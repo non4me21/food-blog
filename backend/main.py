@@ -1,7 +1,6 @@
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
 from models import SearchRequest, SearchResponse
 from llm import parse_query, reformat_recipes
@@ -50,5 +49,3 @@ def search(request: SearchRequest):
 def health():
     return {"status": "ok"}
 
-
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
