@@ -6,3 +6,4 @@ sentence-transformers==3.2.1
 chromadb==0.5.18
 pandas==2.2.3
 pydantic==2.9.2
+redis==5.0.1

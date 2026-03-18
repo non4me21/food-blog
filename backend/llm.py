@@ -45,35 +45,26 @@ Rules:
 - If the query makes no sense as a food/recipe request, return: {{"error": "Cannot parse as recipe query"}}
 - Return ONLY the JSON, no markdown, no explanation"""
 
-REFORMAT_PROMPT = """You are a friendly recipe assistant. The user searched for: "{query}"
+REFORMAT_PROMPT = """You are a recipe assistant. The user searched for: "{query}"
 
-Below are {n} recipes. Format each one clearly. After each recipe, output exactly this separator on its own line:
----RECIPE_END---
+Below are {n} recipes. Return ONLY a valid JSON array with exactly {n} objects. No markdown, no explanation.
 
-For each recipe write:
-1. A brief intro line mentioning why this matches their request
-2. The recipe name as a header
-3. Key info (time, difficulty) in a compact line
-4. Ingredients as a bullet list
-5. Numbered directions
-6. One-line note about dietary/health profile
-
-Be concise and practical. Do not add commentary outside the recipe blocks.
+Each object must have these fields:
+- "title": recipe name (string)
+- "description": one sentence explaining why this matches the user's request (string)
+- "ingredients": list of ingredient strings, each clean and readable (array of strings)
+- "directions": list of step strings, each a complete instruction (array of strings)
+- "total_time": total time as a readable string e.g. "45 min" (string)
+- "difficulty": difficulty level (string)
 
 {recipes_block}"""
 
 RECIPE_BLOCK_TEMPLATE = """--- Recipe {n} ---
 Name: {recipe_name}
-Cuisine: {cuisine}
 Prep time: {prep_time} | Cook time: {cook_time} | Total time: {total_time}
-Difficulty: {difficulty} | Speed: {cook_speed}
-Main ingredient: {main_ingredient} | Taste: {primary_taste}
-Dietary profile: {dietary_profile}
-Health level: {health_level} (score: {healthiness_score})
+Difficulty: {difficulty}
 Ingredients: {ingredients}
 Directions: {directions}"""
-
-RECIPES_SEPARATOR = "---RECIPE_END---"
 
 logger = logging.getLogger(__name__)
 
@@ -102,17 +93,10 @@ def reformat_recipes(recipes, user_query):
         blocks.append(RECIPE_BLOCK_TEMPLATE.format(
             n=i,
             recipe_name=recipe.get("recipe_name", "Unknown"),
-            cuisine=recipe.get("cuisine", "N/A"),
             prep_time=recipe.get("prep_time", "N/A"),
             cook_time=recipe.get("cook_time", "N/A"),
             total_time=recipe.get("total_time", "N/A"),
             difficulty=recipe.get("difficulty", "N/A"),
-            cook_speed=recipe.get("cook_speed", "N/A"),
-            main_ingredient=recipe.get("main_ingredient", "N/A"),
-            primary_taste=recipe.get("primary_taste", "N/A"),
-            dietary_profile=recipe.get("dietary_profile", "N/A"),
-            health_level=recipe.get("health_level", "N/A"),
-            healthiness_score=recipe.get("healthiness_score", "N/A"),
             ingredients=recipe.get("ingredients", "N/A"),
             directions=recipe.get("directions", "N/A"),
         ))
@@ -122,5 +106,9 @@ def reformat_recipes(recipes, user_query):
         recipes_block="\n\n".join(blocks),
     )
     response = _model.generate_content(prompt)
-    parts = [p.strip() for p in response.text.split(RECIPES_SEPARATOR) if p.strip()]
-    return parts
+    text = response.text.strip()
+    if text.startswith("```"):
+        text = text.split("```")[1]
+        if text.startswith("json"):
+            text = text[4:]
+    return json.loads(text.strip())

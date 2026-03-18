@@ -87,10 +87,14 @@ def main():
             val = row.get(field)
             metadata[field] = 1 if val is True or str(val).lower() == "true" else 0
 
-        documents.append(ingredient_text)
+        combined_text = safe_str(row.get("combined_text")) or ingredient_text
+        # Store ingredient_text in metadata for post-filtering; embed combined_text for richer semantic search
+        metadata["ingredient_text"] = ingredient_text
+
+        documents.append(combined_text)
         metadatas.append(metadata)
         ids.append(f"recipe_{i}")
-        embeddings.append(embed_text(ingredient_text))
+        embeddings.append(embed_text(combined_text))
 
         if (i + 1) % BATCH_SIZE == 0:
             collection.add(documents=documents, metadatas=metadatas, ids=ids, embeddings=embeddings)

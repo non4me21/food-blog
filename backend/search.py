@@ -112,7 +112,8 @@ def search_recipes(parsed_query, query_text):
         if name in seen_names:
             logger.info(f"Skipping '{name}' — duplicate")
             continue
-        ingredients_lower = document.lower()
+        # Use ingredient_text for dietary/exclusion checks (cleaner than combined_text)
+        ingredients_lower = metadata.get("ingredient_text", document).lower()
         if any(exc in ingredients_lower for exc in excluded):
             logger.info(f"Skipping '{name}' — excluded ingredient")
             continue
@@ -120,7 +121,7 @@ def search_recipes(parsed_query, query_text):
             logger.info(f"Skipping '{name}' — fails dietary keyword check")
             continue
         seen_names.add(name)
-        metadata["ingredients"] = document
+        metadata["ingredients"] = ingredients_lower
         recipes.append(metadata)
 
     logger.info(f"Found {len(recipes)} recipes after post-filtering")
