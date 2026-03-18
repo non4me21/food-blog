@@ -1,5 +1,11 @@
 import { boolean, integer, jsonb, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
 
+export const categories = pgTable("categories", {
+  id:   serial("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  slug: text("slug").notNull().unique(),
+})
+
 export const recipes = pgTable("recipes", {
   id:           serial("id").primaryKey(),
   slug:         text("slug").unique().notNull(),
@@ -7,11 +13,8 @@ export const recipes = pgTable("recipes", {
   description:  text("description"),
   ingredients:  jsonb("ingredients").notNull().default([]),
   directions:   jsonb("directions").notNull().default([]),
-  prep_time:    integer("prep_time"),
-  cook_time:    integer("cook_time"),
-  cuisine:      text("cuisine"),
-  category:     text("category"),
-  tags:         text("tags").array().default([]),
+  difficulty:   text("difficulty"),
+  category_id:  integer("category_id").references(() => categories.id, { onDelete: "set null" }),
   image_url:    text("image_url"),
   published:    boolean("published").default(false),
   published_at: timestamp("published_at", { withTimezone: true }),
