@@ -207,6 +207,7 @@ Keep CORS and endpoint structure clean from the start.
 
 - Commits per feature
 - No need to suggest when to commit
+- Never push without explicit instruction from the user — commit freely, push only when told
 
 ---
 
