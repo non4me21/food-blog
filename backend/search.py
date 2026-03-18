@@ -2,9 +2,7 @@ import logging
 import chromadb
 from chromadb.config import Settings
 from embeddings import embed_text
-
-CHROMA_PATH = "./chroma_db"
-COLLECTION_NAME = "recipes"
+from config import CHROMA_PATH, COLLECTION_NAME
 N_RESULTS = 30
 
 # Hard ingredient-level post-filters for dietary flags.

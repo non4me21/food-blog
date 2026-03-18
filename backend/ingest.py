@@ -7,10 +7,7 @@ import pandas as pd
 import chromadb
 from chromadb.config import Settings
 from embeddings import embed_text
-
-CHROMA_PATH = "./chroma_db"
-COLLECTION_NAME = "recipes"
-DATASET_PATH = "./data/recipes.csv"
+from config import CHROMA_PATH, COLLECTION_NAME, DATASET_PATH
 BATCH_SIZE = 100
 
 logging.basicConfig(
