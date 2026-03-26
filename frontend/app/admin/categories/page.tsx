@@ -50,6 +50,12 @@ export default async function CategoriesPage() {
                 </div>
                 <div className="flex items-center gap-4 shrink-0">
                   <span className="text-xs text-gray-400">{Number(cat.recipeCount)} przepisów</span>
+                  <a
+                    href={`/admin/categories/${cat.id}/edit`}
+                    className="text-xs font-semibold text-green-700 hover:text-green-900 transition-colors"
+                  >
+                    Edytuj
+                  </a>
                   <DeleteButton
                     action={deleteCategoryAction.bind(null, cat.id)}
                     confirmMessage={`Usunąć kategorię "${cat.name}"? Przepisy nie zostaną usunięte.`}
