@@ -25,7 +25,11 @@ export default async function EditCategoryPage({ params }: { params: Promise<{ i
       <div className="bg-white rounded-2xl border border-gray-200 p-6">
         <AddCategoryForm
           serverAction={action}
-          defaultValues={category}
+          defaultValues={{
+            ...category,
+            description: category.description ?? undefined,
+            image_url: category.image_url ?? undefined,
+          }}
           submitLabel="Zapisz zmiany"
         />
       </div>
