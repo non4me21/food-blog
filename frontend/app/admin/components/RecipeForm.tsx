@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useState, useEffect } from "react"
+import { useActionState, useState } from "react"
 import ImageUpload from "./ImageUpload"
 
 type Category = { id: number; name: string }
@@ -51,8 +51,10 @@ export default function RecipeForm({
   const [error, formAction, isPending] = useActionState(serverAction, null)
 
   const [title, setTitle] = useState(defaultValues.title ?? "")
-  const [slug, setSlug] = useState(defaultValues.slug ?? "")
+  const [slugInput, setSlugInput] = useState(defaultValues.slug ?? "")
   const [slugEdited, setSlugEdited] = useState(!!defaultValues.slug)
+
+  const slug = slugEdited ? slugInput : toSlug(title)
 
   const [ingredients, setIngredients] = useState<string[]>(
     defaultValues.ingredients?.length ? defaultValues.ingredients : [""]
@@ -60,11 +62,6 @@ export default function RecipeForm({
   const [directions, setDirections] = useState<string[]>(
     defaultValues.directions?.length ? defaultValues.directions : [""]
   )
-
-  // Auto-generate slug from title (unless user manually edited it)
-  useEffect(() => {
-    if (!slugEdited) setSlug(toSlug(title))
-  }, [title, slugEdited])
 
   function addIngredient() {
     setIngredients((prev) => [...prev, ""])
@@ -131,7 +128,7 @@ export default function RecipeForm({
               name="slug"
               type="text"
               value={slug}
-              onChange={(e) => { setSlug(e.target.value); setSlugEdited(true) }}
+              onChange={(e) => { setSlugInput(e.target.value); setSlugEdited(true) }}
               className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent text-gray-900 font-mono text-sm"
               placeholder="placki-ziemniaczane"
             />

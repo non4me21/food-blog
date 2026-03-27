@@ -206,8 +206,7 @@ Keep CORS and endpoint structure clean from the start.
 ## Git
 
 - Commits per feature
-- No need to suggest when to commit
-- Never push without explicit instruction from the user — commit freely, push only when told
+- Never commit or push without explicit instruction from the user — wait for "commituj", "push" etc.
 
 ---
 

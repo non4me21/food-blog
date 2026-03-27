@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useState, useEffect } from "react"
+import { useActionState, useState } from "react"
 import ImageUpload from "../components/ImageUpload"
 
 type DefaultValues = {
@@ -30,12 +30,10 @@ function toSlug(str: string): string {
 export default function AddCategoryForm({ serverAction, defaultValues = {}, submitLabel = "Dodaj kategorię" }: Props) {
   const [error, formAction, isPending] = useActionState(serverAction, null)
   const [name, setName] = useState(defaultValues.name ?? "")
-  const [slug, setSlug] = useState(defaultValues.slug ?? "")
+  const [slugInput, setSlugInput] = useState(defaultValues.slug ?? "")
   const [slugEdited, setSlugEdited] = useState(!!defaultValues.slug)
 
-  useEffect(() => {
-    if (!slugEdited) setSlug(toSlug(name))
-  }, [name, slugEdited])
+  const slug = slugEdited ? slugInput : toSlug(name)
 
   return (
     <form action={formAction} className="space-y-4">
@@ -70,7 +68,7 @@ export default function AddCategoryForm({ serverAction, defaultValues = {}, subm
             name="slug"
             type="text"
             value={slug}
-            onChange={(e) => { setSlug(e.target.value); setSlugEdited(true) }}
+            onChange={(e) => { setSlugInput(e.target.value); setSlugEdited(true) }}
             className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-700 text-gray-900 font-mono text-sm"
             placeholder="sniadania"
           />

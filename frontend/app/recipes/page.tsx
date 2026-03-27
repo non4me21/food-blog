@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { db } from "@/db"
 import { recipes, categories } from "@/db/schema"
-import { eq, and, desc } from "drizzle-orm"
+import { eq, desc } from "drizzle-orm"
 import RecipeCard from "@/app/components/RecipeCard"
 
 export const metadata: Metadata = {
