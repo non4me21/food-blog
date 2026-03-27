@@ -30,21 +30,11 @@ jobs:
       - name: Lint
         run: npm run lint
 
-  deploy:
-    name: Deploy
+  approve:
+    name: Approve deploy
     needs: check
     runs-on: ubuntu-latest
     environment: production
 
     steps:
-      - name: Deploy next-app
-        run: npx @railway/cli redeploy --service next-app --yes
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
-
-      - name: Deploy backend
-        run: npx @railway/cli redeploy --service backend --yes
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
+      - run: echo "Approved — Railway will now deploy"
