@@ -54,6 +54,11 @@ services:
       BUCKET_SECRET_ACCESS_KEY: ${BUCKET_SECRET_ACCESS_KEY}
       BUCKET_NAME: ${BUCKET_NAME}
       BUCKET_PUBLIC_URL: ${BUCKET_PUBLIC_URL}
+    command: sh -c "npx drizzle-kit migrate && npm run dev"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
     depends_on:
       postgres:
         condition: service_healthy

@@ -199,6 +199,38 @@ export async function createCategoryAction(
   redirect("/admin/categories")
 }
 
+export async function updateCategoryAction(
+  id: number,
+  _prevState: string | null,
+  formData: FormData
+): Promise<string | null> {
+  const name = (formData.get("name") as string)?.trim()
+  if (!name) return "Nazwa kategorii jest wymagana."
+
+  const slug = (formData.get("slug") as string)?.trim() || toSlug(name)
+
+  try {
+    await db
+      .update(categories)
+      .set({
+        name,
+        slug,
+        description: (formData.get("description") as string) || null,
+        image_url: (formData.get("image_url") as string) || null,
+      })
+      .where(eq(categories.id, id))
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e)
+    if (msg.includes("unique")) return "Kategoria o tej nazwie lub slugu już istnieje."
+    return "Błąd zapisu do bazy danych."
+  }
+
+  revalidatePath("/")
+  revalidatePath("/admin/categories")
+  revalidatePath(`/categories/${slug}`)
+  redirect("/admin/categories")
+}
+
 export async function deleteCategoryAction(id: number) {
   await db.delete(categories).where(eq(categories.id, id))
   revalidatePath("/")
