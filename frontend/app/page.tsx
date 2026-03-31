@@ -156,7 +156,7 @@ export default async function HomePage() {
               <ArrowRightIcon />
             </Link>
             <Link
-              href="/search"
+              href="/przepis-z-ai"
               className="inline-flex items-center justify-between gap-3 px-6 py-3.5 rounded-full bg-basil-dark/50 border border-white/20 text-white font-semibold backdrop-blur-sm transition-all duration-200 hover:bg-basil-dark/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-basil"
             >
               Wyszukaj z AI
@@ -394,7 +394,7 @@ export default async function HomePage() {
             Opisz, na co masz ochotę — AI przeszuka dziesiątki tysięcy przepisów z całego świata i dobierze idealny dla Ciebie.
           </p>
           <Link
-            href="/search"
+            href="/przepis-z-ai"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-white font-bold text-base bg-basil shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-basil"
           >
             <SparkleIcon size={18} />

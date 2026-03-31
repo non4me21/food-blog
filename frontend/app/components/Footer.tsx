@@ -41,7 +41,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/search" className="hover:text-white transition-colors inline-flex items-center gap-1.5">
+                <Link href="/przepis-z-ai" className="hover:text-white transition-colors inline-flex items-center gap-1.5">
                   Wyszukiwanie AI
                   <span className="text-xs px-1.5 py-0.5 rounded-full text-white font-semibold bg-coral">
                     AI

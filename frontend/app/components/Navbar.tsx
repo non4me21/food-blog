@@ -51,8 +51,8 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href="/search"
-            aria-current={pathname === "/search" ? "page" : undefined}
+            href="/przepis-z-ai"
+            aria-current={pathname === "/przepis-z-ai" ? "page" : undefined}
             className="ml-3 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-white bg-coral transition-all hover:brightness-110 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-coral"
           >
             <SparkleIcon aria-hidden="true" />
@@ -90,7 +90,7 @@ export default function Navbar() {
             ))}
             <li>
               <Link
-                href="/search"
+                href="/przepis-z-ai"
                 className="block mt-1 px-3 py-2 rounded-lg text-sm font-semibold text-white text-center bg-coral"
                 onClick={() => setOpen(false)}
               >
