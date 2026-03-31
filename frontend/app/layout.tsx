@@ -1,12 +1,18 @@
 import type { Metadata } from "next"
-import { Geist } from "next/font/google"
+import { Plus_Jakarta_Sans, Bricolage_Grotesque } from "next/font/google"
 import "./globals.css"
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
+import ScrollProgress from "./components/ScrollProgress"
 
-const geist = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
+  subsets: ["latin", "latin-ext"],
+})
+
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin", "latin-ext"],
 })
 
 export const metadata: Metadata = {
@@ -27,14 +33,15 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pl" className={`${geist.variable} h-full`}>
+    <html lang="pl" className={`${plusJakarta.variable} ${bricolage.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-green-800 focus:rounded-md focus:shadow-lg focus:outline-none"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-basil-dark focus:rounded-md focus:shadow-lg focus:outline-none"
         >
           Skip to main content
         </a>
+        <ScrollProgress />
         <Navbar />
         <main id="main-content" className="flex-1">
           {children}

@@ -5,15 +5,9 @@ import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
 import { eq, and, desc } from "drizzle-orm"
 import RecipeCard from "@/app/components/RecipeCard"
+import { pluralPrzepis } from "@/lib/utils"
 
 type Props = { params: Promise<{ slug: string }> }
-
-function pluralPrzepis(n: number): string {
-  if (n === 1) return "1 przepis"
-  if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20))
-    return `${n} przepisy`
-  return `${n} przepisów`
-}
 
 export async function generateStaticParams() {
   const allCategories = await db.select({ slug: categories.slug }).from(categories)
@@ -68,13 +62,28 @@ export default async function CategoryPage({ params }: Props) {
     <>
       {/* ── Hero kategorii ── */}
       <section
-        className="relative py-16 lg:py-24 overflow-hidden"
-        style={{ backgroundColor: "#1e6020" }}
+        className="relative py-16 lg:py-24 overflow-hidden bg-basil"
         aria-labelledby="category-heading"
       >
+        {/* Subtle glow */}
+        <div
+          className="blob-float absolute pointer-events-none"
+          style={{
+            width: "350px",
+            height: "350px",
+            top: "-80px",
+            right: "-60px",
+            background: "var(--color-gold)",
+            opacity: 0.10,
+            filter: "blur(70px)",
+            borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%",
+          }}
+          aria-hidden="true"
+        />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <nav aria-label="Ścieżka nawigacji" className="mb-6">
-            <ol className="flex items-center gap-2 text-sm text-white/60" role="list">
+            <ol className="flex items-center gap-2 text-sm text-white/50" role="list">
               <li><Link href="/" className="hover:text-white transition-colors">Strona główna</Link></li>
               <li aria-hidden="true">/</li>
               <li><Link href="/categories" className="hover:text-white transition-colors">Kategorie</Link></li>
@@ -83,37 +92,46 @@ export default async function CategoryPage({ params }: Props) {
             </ol>
           </nav>
 
-          <h1 id="category-heading" className="text-4xl lg:text-5xl font-black text-white mb-4">
+          <h1
+            id="category-heading"
+            className="font-display text-5xl lg:text-6xl font-extrabold text-white mb-4 tracking-tight"
+          >
             {category.name}
           </h1>
           {category.description && (
             <p className="text-white/80 text-lg max-w-2xl leading-relaxed">{category.description}</p>
           )}
-          <p className="mt-4 text-white/60 text-sm font-medium">
+          <p className="mt-4 text-white/50 text-sm font-medium">
             {pluralPrzepis(categoryRecipes.length)}
           </p>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 leading-none" aria-hidden="true">
-          <svg viewBox="0 0 1440 40" fill="white" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-10">
-            <path d="M0,40 C480,0 960,0 1440,40 L1440,40 L0,40 Z" />
+          <svg
+            viewBox="0 0 1440 120"
+            fill="var(--color-cream)"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            className="w-full h-12 md:h-20 lg:h-24"
+          >
+            <path d="M0,60 C160,110 320,20 480,70 C640,120 800,10 960,50 C1120,90 1280,25 1440,65 L1440,120 L0,120 Z" />
           </svg>
         </div>
       </section>
 
       {/* ── Siatka przepisów ── */}
-      <section className="py-16 bg-white" aria-label={`Przepisy z kategorii ${category.name}`}>
+      <section className="py-16" aria-label={`Przepisy z kategorii ${category.name}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {categoryRecipes.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-400 text-lg mb-4">Brak przepisów w tej kategorii.</p>
-              <Link href="/" className="text-green-700 font-semibold hover:text-green-900 transition-colors">
+              <Link href="/" className="text-basil font-semibold hover:text-basil-dark transition-colors">
                 ← Powrót do strony głównej
               </Link>
             </div>
           ) : (
-            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categoryRecipes.map((recipe) => (
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {categoryRecipes.map((recipe, i) => (
                 <li key={recipe.id}>
                   <RecipeCard
                     slug={recipe.slug}
@@ -121,6 +139,7 @@ export default async function CategoryPage({ params }: Props) {
                     description={recipe.description}
                     image_url={recipe.image_url}
                     difficulty={recipe.difficulty}
+                    index={i}
                   />
                 </li>
               ))}

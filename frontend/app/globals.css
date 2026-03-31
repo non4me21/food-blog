@@ -1,15 +1,49 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --color-brand-green: #1e6020;
-  --color-brand-amber: #f5b731;
-  --color-brand-orange: #e8531a;
-  --color-mint: #f0f7f0;
+  --font-sans: var(--font-plus-jakarta);
+  --font-display: var(--font-bricolage), sans-serif;
+  --color-basil:      #38a169;
+  --color-basil-dark: #276749;
+  --color-coral:      #e86833;
+  --color-gold:       #d4a017;
+  --color-cream:      #faf7f2;
+  --color-cream-warm: #f0e6d2;
 }
 
 body {
-  background: #ffffff;
-  color: #171717;
-  font-family: var(--font-sans), Arial, sans-serif;
+  background: var(--color-cream);
+  color: #1a1a1a;
+  font-family: var(--font-sans), sans-serif;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33%      { transform: translateY(-12px) rotate(1deg); }
+  66%      { transform: translateY(4px) rotate(-1deg); }
+}
+
+.blob-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.blob-float-alt {
+  animation: float 11s ease-in-out infinite reverse;
+  animation-delay: -4s;
+}
+
+.blob-on-hover {
+  transition: border-radius 1s ease-in-out;
+}
+
+.group:hover .blob-on-hover {
+  border-radius: 70% 30% 50% 50% / 30% 70% 70% 30% !important;
+}
+
+.blob-hover-self {
+  transition: border-radius 1s ease-in-out;
+}
+
+.blob-hover-self:hover {
+  border-radius: 50% 60% 55% 45% / 45% 50% 60% 55% !important;
 }
