@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme inline {
+@theme {
   --font-sans: var(--font-plus-jakarta);
   --font-display: var(--font-bricolage), sans-serif;
   --color-basil:      #38a169;

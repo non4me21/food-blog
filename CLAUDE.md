@@ -66,8 +66,8 @@ User
   │
   └── /search
           ↓
-      Next.js API route (/api/search)
-          ↓ (internal: http://backend:8000)
+      Next.js page (client-side fetch via NEXT_PUBLIC_BACKEND_URL)
+          ↓ (http://localhost:8000 locally, Railway URL in prod)
       FastAPI AI search
           ↓
       Gemini parses query → { wanted, excluded, filters }

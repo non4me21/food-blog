@@ -4,8 +4,7 @@
 /node_modules
 __pycache__/
 *.pyc
-backend/chroma_db/
-backend/data/
+backend/persistent/
 scripts/dumps/
 backend/.venv/
 .venv/
