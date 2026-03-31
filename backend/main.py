@@ -67,7 +67,8 @@ def search(request: SearchRequest):
         return SearchResponse(error="No matching recipes found. Try different ingredients or remove some filters.")
 
     top_recipes = recipes[:TOP_K]
-    results = reformat_recipes(top_recipes, request.query)
+    language = parsed.get("language", "en")
+    results = reformat_recipes(top_recipes, request.query, language)
 
     if r:
         try:
