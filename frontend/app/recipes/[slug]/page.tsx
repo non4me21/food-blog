@@ -5,6 +5,7 @@ import Link from "next/link"
 import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
 import { eq, and } from "drizzle-orm"
+import ShareButton from "@/app/components/ShareButton"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -150,20 +151,26 @@ export default async function RecipePage({ params }: Props) {
             <p className="text-gray-500 text-lg leading-relaxed mb-6">{recipe.description}</p>
           )}
 
-          <dl className="flex flex-wrap gap-3">
-            {recipe.difficulty && (
-              <div className="flex items-center gap-1.5 px-4 py-2 bg-basil/8 rounded-full text-sm font-medium text-basil-dark">
-                <DifficultyIcon />
-                <dt className="sr-only">Trudność</dt>
-                <dd className="relative group/diff font-mono tracking-widest cursor-default">
-                  {DIFFICULTY_DOTS[recipe.difficulty] ?? recipe.difficulty}
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-900 text-white text-xs font-mono font-medium whitespace-nowrap opacity-0 group-hover/diff:opacity-100 transition-opacity pointer-events-none">
-                    {DIFFICULTY_LABEL[recipe.difficulty] ?? recipe.difficulty}
-                  </span>
-                </dd>
-              </div>
-            )}
-          </dl>
+          <div className="flex flex-wrap items-center gap-3">
+            <dl className="flex flex-wrap gap-3">
+              {recipe.difficulty && (
+                <div className="flex items-center gap-1.5 px-4 py-2 bg-basil/8 rounded-full text-sm font-medium text-basil-dark">
+                  <DifficultyIcon />
+                  <dt className="sr-only">Trudność</dt>
+                  <dd className="relative group/diff font-mono tracking-widest cursor-default">
+                    {DIFFICULTY_DOTS[recipe.difficulty] ?? recipe.difficulty}
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-900 text-white text-xs font-mono font-medium whitespace-nowrap opacity-0 group-hover/diff:opacity-100 transition-opacity pointer-events-none">
+                      {DIFFICULTY_LABEL[recipe.difficulty] ?? recipe.difficulty}
+                    </span>
+                  </dd>
+                </div>
+              )}
+            </dl>
+            <ShareButton
+              title={recipe.title}
+              url={`/recipes/${recipe.slug}`}
+            />
+          </div>
         </header>
 
         <div className="h-px bg-stone-100 mb-10" role="separator" />

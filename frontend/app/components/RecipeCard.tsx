@@ -36,27 +36,31 @@ export default function RecipeCard({
   return (
     <Link
       href={`/recipes/${slug}`}
-      className="group relative block rounded-2xl overflow-hidden aspect-[4/3] hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
+      className="group relative block rounded-2xl aspect-[4/3] hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
     >
-      {/* Full bleed image */}
-      {image_url ? (
-        <Image
-          src={image_url}
-          alt={title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100" />
-      )}
+      {/* Full bleed image — overflow-hidden isolated here so tooltips aren't clipped */}
+      <div className="absolute inset-0 rounded-2xl overflow-hidden">
+        {image_url ? (
+          <Image
+            src={image_url}
+            alt={title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100" />
+        )}
+      </div>
 
       {/* Difficulty badge */}
       {difficulty && (
-        <span
-          className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full font-mono tracking-widest"
-          title={`Trudność: ${DIFFICULTY_LABEL[difficulty] ?? difficulty}`}
-        >
+        <span className="absolute top-3 right-3 group/diff bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full font-mono tracking-widest cursor-default">
           {DIFFICULTY_DOTS[difficulty] ?? difficulty}
+          {/* mobile: label always visible; desktop: hover tooltip */}
+          <span className="ml-1 lg:hidden">{DIFFICULTY_LABEL[difficulty] ?? difficulty}</span>
+          <span className="hidden lg:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-900 text-white text-xs font-mono font-medium whitespace-nowrap opacity-0 group-hover/diff:opacity-100 transition-opacity pointer-events-none">
+            {DIFFICULTY_LABEL[difficulty] ?? difficulty}
+          </span>
         </span>
       )}
 
