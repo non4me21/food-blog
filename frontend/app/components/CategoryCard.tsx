@@ -63,10 +63,11 @@ export default function CategoryCard({
       {/* Text on blob */}
       <div className="absolute inset-y-0 left-2 flex items-center">
         <div
-          className="px-10 py-10 drop-shadow-md"
+          className="px-10 py-10"
           style={{
             backgroundImage: getBlobSvg(index),
             backgroundSize: "100% 100%",
+            filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.22)) drop-shadow(0 2px 5px rgba(0,0,0,0.14))",
           }}
         >
           <Heading className="font-display text-xl font-bold text-gray-900 leading-tight mb-1">

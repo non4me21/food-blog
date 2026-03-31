@@ -73,7 +73,7 @@ export default async function CategoryPage({ params }: Props) {
             height: "350px",
             top: "-80px",
             right: "-60px",
-            background: "#d4a017",
+            background: "var(--color-gold)",
             opacity: 0.10,
             filter: "blur(70px)",
             borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%",

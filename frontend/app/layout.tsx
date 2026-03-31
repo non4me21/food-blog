@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Bricolage_Grotesque } from "next/font/google"
 import "./globals.css"
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
+import ScrollProgress from "./components/ScrollProgress"
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -40,6 +41,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <ScrollProgress />
         <Navbar />
         <main id="main-content" className="flex-1">
           {children}

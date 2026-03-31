@@ -18,7 +18,12 @@ const BLOB_PATHS = [
   "M28,32 C55,4 108,22 148,8 C172,-2 200,28 196,66 C192,98 168,108 182,138 C196,168 162,198 118,196 C78,194 62,175 32,183 C6,190 -10,162 4,124 C14,92 -4,68 6,44 C12,32 16,36 28,32Z",
 ]
 
+// %23faf7f2 is --color-cream from globals.css (URL-encoded #faf7f2).
+// CSS variables cannot be used inside data URIs, so the value lives here.
+// Keep in sync with globals.css --color-cream.
+const BLOB_FILL = "%23faf7f2"
+
 export function getBlobSvg(index: number): string {
   const path = BLOB_PATHS[index % BLOB_PATHS.length]
-  return `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='${path}'/%3E%3C/svg%3E")`
+  return `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='${BLOB_FILL}' d='${path}'/%3E%3C/svg%3E")`
 }

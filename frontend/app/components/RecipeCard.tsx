@@ -13,7 +13,12 @@ type RecipeCardProps = {
   index?: number
 }
 
-const DIFFICULTY_PL: Record<string, string> = {
+const DIFFICULTY_DOTS: Record<string, string> = {
+  easy: "●○○", medium: "●●○", hard: "●●●",
+  łatwy: "●○○", średni: "●●○", trudny: "●●●",
+}
+
+const DIFFICULTY_LABEL: Record<string, string> = {
   easy: "łatwy", medium: "średni", hard: "trudny",
   łatwy: "łatwy", średni: "średni", trudny: "trudny",
 }
@@ -47,18 +52,22 @@ export default function RecipeCard({
 
       {/* Difficulty badge */}
       {difficulty && (
-        <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full capitalize">
-          {DIFFICULTY_PL[difficulty] ?? difficulty}
+        <span
+          className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full font-mono tracking-widest"
+          title={`Trudność: ${DIFFICULTY_LABEL[difficulty] ?? difficulty}`}
+        >
+          {DIFFICULTY_DOTS[difficulty] ?? difficulty}
         </span>
       )}
 
       {/* Text on blob */}
       <div className="absolute inset-y-0 left-2 flex items-center">
         <div
-          className="px-10 py-10 drop-shadow-md"
+          className="px-10 py-10"
           style={{
             backgroundImage: getBlobSvg(index),
             backgroundSize: "100% 100%",
+            filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.22)) drop-shadow(0 2px 5px rgba(0,0,0,0.14))",
           }}
         >
           {categoryName && categorySlug && (

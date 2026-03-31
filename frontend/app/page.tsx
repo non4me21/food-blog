@@ -107,7 +107,7 @@ export default async function HomePage() {
               {heroImages[1] ? (
                 <Image src={heroImages[1]} alt="" fill className="object-cover" />
               ) : (
-                <div className="w-full h-full" style={{ background: "linear-gradient(135deg, #276749, #38a169)" }} />
+                <div className="w-full h-full" style={{ background: "linear-gradient(135deg, var(--color-basil-dark), var(--color-basil))" }} />
               )}
             </div>
 
@@ -124,7 +124,7 @@ export default async function HomePage() {
               {heroImages[0] ? (
                 <Image src={heroImages[0]} alt="" fill priority className="object-cover" />
               ) : (
-                <div className="w-full h-full" style={{ background: "linear-gradient(135deg, #d4a017, #e86833)" }} />
+                <div className="w-full h-full" style={{ background: "linear-gradient(135deg, var(--color-gold), var(--color-coral))" }} />
               )}
             </div>
 
@@ -141,7 +141,7 @@ export default async function HomePage() {
               {heroImages[2] ? (
                 <Image src={heroImages[2]} alt="" fill className="object-cover" />
               ) : (
-                <div className="w-full h-full" style={{ background: "linear-gradient(135deg, #e86833, #d4a017)" }} />
+                <div className="w-full h-full" style={{ background: "linear-gradient(135deg, var(--color-coral), var(--color-gold))" }} />
               )}
             </div>
           </div>
@@ -329,7 +329,7 @@ export default async function HomePage() {
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full" style={{ background: "linear-gradient(135deg, #276749, #38a169)" }} />
+                      <div className="w-full h-full" style={{ background: "linear-gradient(135deg, var(--color-basil-dark), var(--color-basil))" }} />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
                   </div>
@@ -373,7 +373,7 @@ export default async function HomePage() {
       >
         <div
           className="blob-float-alt absolute pointer-events-none"
-          style={{ width: "450px", height: "450px", bottom: "-120px", right: "-80px", background: "#38a169", opacity: 0.06, filter: "blur(80px)", borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%" }}
+          style={{ width: "450px", height: "450px", bottom: "-120px", right: "-80px", background: "var(--color-basil)", opacity: 0.06, filter: "blur(80px)", borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%" }}
           aria-hidden="true"
         />
 

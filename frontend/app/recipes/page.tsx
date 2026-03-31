@@ -44,7 +44,7 @@ export default async function RecipesPage() {
             height: "400px",
             top: "-100px",
             right: "-50px",
-            background: "#d4a017",
+            background: "var(--color-gold)",
             opacity: 0.10,
             filter: "blur(80px)",
             borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%",

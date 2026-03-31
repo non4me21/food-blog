@@ -55,7 +55,12 @@ export default async function RecipePage({ params }: Props) {
   const ingredients = (recipe.ingredients ?? []) as string[]
   const directions = (recipe.directions ?? []) as string[]
 
-  const DIFFICULTY_PL: Record<string, string> = {
+  const DIFFICULTY_DOTS: Record<string, string> = {
+    easy: "●○○", medium: "●●○", hard: "●●●",
+    łatwy: "●○○", średni: "●●○", trudny: "●●●",
+  }
+
+  const DIFFICULTY_LABEL: Record<string, string> = {
     easy: "łatwy", medium: "średni", hard: "trudny",
     łatwy: "łatwy", średni: "średni", trudny: "trudny",
   }
@@ -150,7 +155,12 @@ export default async function RecipePage({ params }: Props) {
               <div className="flex items-center gap-1.5 px-4 py-2 bg-basil/8 rounded-full text-sm font-medium text-basil-dark">
                 <DifficultyIcon />
                 <dt className="sr-only">Trudność</dt>
-                <dd className="capitalize">{DIFFICULTY_PL[recipe.difficulty] ?? recipe.difficulty}</dd>
+                <dd className="relative group/diff font-mono tracking-widest cursor-default">
+                  {DIFFICULTY_DOTS[recipe.difficulty] ?? recipe.difficulty}
+                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-900 text-white text-xs font-mono font-medium whitespace-nowrap opacity-0 group-hover/diff:opacity-100 transition-opacity pointer-events-none">
+                    {DIFFICULTY_LABEL[recipe.difficulty] ?? recipe.difficulty}
+                  </span>
+                </dd>
               </div>
             )}
           </dl>
