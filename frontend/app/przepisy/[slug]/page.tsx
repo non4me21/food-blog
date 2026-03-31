@@ -123,7 +123,7 @@ export default async function RecipePage({ params }: Props) {
             {category && (
               <>
                 <li>
-                  <Link href={`/categories/${category.slug}`} className="hover:text-gray-600 transition-colors">
+                  <Link href={`/kategorie/${category.slug}`} className="hover:text-gray-600 transition-colors">
                     {category.name}
                   </Link>
                 </li>
@@ -138,7 +138,7 @@ export default async function RecipePage({ params }: Props) {
         <header className="mb-8">
           {category && (
             <Link
-              href={`/categories/${category.slug}`}
+              href={`/kategorie/${category.slug}`}
               className="text-xs font-bold uppercase tracking-widest text-basil hover:text-basil-dark transition-colors mb-3 inline-block"
             >
               {category.name}
@@ -169,7 +169,7 @@ export default async function RecipePage({ params }: Props) {
             </dl>
             <ShareButton
               title={recipe.title}
-              url={`/recipes/${recipe.slug}`}
+              url={`/przepisy/${recipe.slug}`}
             />
           </div>
         </header>
@@ -238,7 +238,7 @@ export default async function RecipePage({ params }: Props) {
         {category && (
           <div className="mt-14 pt-8 border-t border-stone-100">
             <Link
-              href={`/categories/${category.slug}`}
+              href={`/kategorie/${category.slug}`}
               className="inline-flex items-center gap-2 text-basil font-semibold hover:text-basil-dark transition-colors"
             >
               <ArrowLeftIcon />

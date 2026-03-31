@@ -86,7 +86,7 @@ export default async function CategoryPage({ params }: Props) {
             <ol className="flex items-center gap-2 text-sm text-white/50" role="list">
               <li><Link href="/" className="hover:text-white transition-colors">Strona główna</Link></li>
               <li aria-hidden="true">/</li>
-              <li><Link href="/categories" className="hover:text-white transition-colors">Kategorie</Link></li>
+              <li><Link href="/kategorie" className="hover:text-white transition-colors">Kategorie</Link></li>
               <li aria-hidden="true">/</li>
               <li className="text-white font-medium" aria-current="page">{category.name}</li>
             </ol>

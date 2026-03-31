@@ -31,17 +31,17 @@ export default function Footer() {
             </h2>
             <ul className="space-y-2 text-sm text-white/50" role="list">
               <li>
-                <Link href="/recipes" className="hover:text-white transition-colors">
+                <Link href="/przepisy" className="hover:text-white transition-colors">
                   Wszystkie Przepisy
                 </Link>
               </li>
               <li>
-                <Link href="/categories" className="hover:text-white transition-colors">
+                <Link href="/kategorie" className="hover:text-white transition-colors">
                   Kategorie
                 </Link>
               </li>
               <li>
-                <Link href="/search" className="hover:text-white transition-colors inline-flex items-center gap-1.5">
+                <Link href="/przepis-z-ai" className="hover:text-white transition-colors inline-flex items-center gap-1.5">
                   Wyszukiwanie AI
                   <span className="text-xs px-1.5 py-0.5 rounded-full text-white font-semibold bg-coral">
                     AI

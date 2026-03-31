@@ -35,7 +35,7 @@ export default function RecipeCard({
 }: RecipeCardProps) {
   return (
     <Link
-      href={`/recipes/${slug}`}
+      href={`/przepisy/${slug}`}
       className="group relative block rounded-2xl aspect-[4/3] hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
     >
       {/* Full bleed image — overflow-hidden isolated here so tooltips aren't clipped */}

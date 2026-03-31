@@ -102,7 +102,7 @@ export default async function AdminRecipesPage() {
                       </Link>
                       {recipe.published && (
                         <Link
-                          href={`/recipes/${recipe.slug}`}
+                          href={`/przepisy/${recipe.slug}`}
                           target="_blank"
                           className="text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors hidden lg:inline"
                         >
