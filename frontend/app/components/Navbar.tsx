@@ -14,7 +14,7 @@ export default function Navbar() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur-sm border-b border-gold/15">
       <nav
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
         aria-label="Main navigation"
@@ -22,17 +22,19 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 font-bold text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 rounded"
+          className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil rounded"
           aria-label="FlavourFind — home"
         >
           <span
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-black select-none"
-            style={{ backgroundColor: "#e8531a" }}
+            className="w-8 h-8 flex items-center justify-center text-white text-sm font-black select-none bg-coral"
+            style={{ borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%" }}
             aria-hidden="true"
           >
             F
           </span>
-          <span className="text-gray-900">FlavourFind</span>
+          <span className="font-display font-bold text-lg tracking-tight text-gray-900">
+            FlavourFind
+          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -42,7 +44,7 @@ export default function Navbar() {
               key={href}
               href={href}
               aria-current={pathname.startsWith(href) ? "page" : undefined}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors aria-[current=page]:text-green-800 aria-[current=page]:bg-green-50"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-basil/8 transition-colors aria-[current=page]:text-basil-dark aria-[current=page]:bg-basil/10"
             >
               <Icon />
               {label}
@@ -51,8 +53,7 @@ export default function Navbar() {
           <Link
             href="/search"
             aria-current={pathname === "/search" ? "page" : undefined}
-            className="ml-3 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-500"
-            style={{ backgroundColor: "#e8531a" }}
+            className="ml-3 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-white bg-coral transition-all hover:brightness-110 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-coral"
           >
             <SparkleIcon aria-hidden="true" />
             Szukaj AI
@@ -61,7 +62,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700"
+          className="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-basil/8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
           onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-controls="mobile-menu"
@@ -73,14 +74,14 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div id="mobile-menu" className="md:hidden border-t border-gray-100 bg-white">
+        <div id="mobile-menu" className="md:hidden border-t border-gold/15 bg-cream">
           <ul className="px-4 py-3 flex flex-col gap-1" role="list">
             {NAV_LINKS.map(({ href, label }) => (
               <li key={href}>
                 <Link
                   href={href}
                   aria-current={pathname.startsWith(href) ? "page" : undefined}
-                  className="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 aria-[current=page]:text-green-800 aria-[current=page]:bg-green-50"
+                  className="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-basil/8 aria-[current=page]:text-basil-dark aria-[current=page]:bg-basil/10"
                   onClick={() => setOpen(false)}
                 >
                   {label}
@@ -90,8 +91,7 @@ export default function Navbar() {
             <li>
               <Link
                 href="/search"
-                className="block mt-1 px-3 py-2 rounded-md text-sm font-semibold text-white text-center"
-                style={{ backgroundColor: "#e8531a" }}
+                className="block mt-1 px-3 py-2 rounded-lg text-sm font-semibold text-white text-center bg-coral"
                 onClick={() => setOpen(false)}
               >
                 Szukaj AI

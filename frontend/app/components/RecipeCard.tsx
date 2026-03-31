@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { getBlobSvg } from "@/lib/utils"
 
 type RecipeCardProps = {
   slug: string
@@ -9,6 +10,12 @@ type RecipeCardProps = {
   difficulty: string | null
   categoryName?: string
   categorySlug?: string
+  index?: number
+}
+
+const DIFFICULTY_PL: Record<string, string> = {
+  easy: "łatwy", medium: "średni", hard: "trudny",
+  łatwy: "łatwy", średni: "średni", trudny: "trudny",
 }
 
 export default function RecipeCard({
@@ -19,58 +26,56 @@ export default function RecipeCard({
   difficulty,
   categoryName,
   categorySlug,
+  index = 0,
 }: RecipeCardProps) {
   return (
-    <article className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100">
-      {/* Image */}
-      <Link href={`/recipes/${slug}`} tabIndex={-1} aria-hidden="true">
-        <div className="relative h-48 bg-gray-100 overflow-hidden">
-          {image_url ? (
-            <Image
-              src={image_url}
-              alt=""
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-amber-100 to-orange-200" />
-          )}
-          {difficulty && (
-            <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-semibold px-2.5 py-1 rounded-full capitalize">
-              {difficulty}
+    <Link
+      href={`/recipes/${slug}`}
+      className="group relative block rounded-2xl overflow-hidden aspect-[4/3] hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
+    >
+      {/* Full bleed image */}
+      {image_url ? (
+        <Image
+          src={image_url}
+          alt={title}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100" />
+      )}
+
+      {/* Difficulty badge */}
+      {difficulty && (
+        <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full capitalize">
+          {DIFFICULTY_PL[difficulty] ?? difficulty}
+        </span>
+      )}
+
+      {/* Text on blob */}
+      <div className="absolute inset-y-0 left-2 flex items-center">
+        <div
+          className="px-10 py-10 drop-shadow-md"
+          style={{
+            backgroundImage: getBlobSvg(index),
+            backgroundSize: "100% 100%",
+          }}
+        >
+          {categoryName && categorySlug && (
+            <span className="text-xs font-black tracking-widest uppercase text-basil mb-1 block">
+              {categoryName}
             </span>
           )}
-        </div>
-      </Link>
-
-      {/* Body */}
-      <div className="p-5">
-        {categoryName && categorySlug && (
-          <Link
-            href={`/categories/${categorySlug}`}
-            className="text-xs font-semibold uppercase tracking-wider text-green-700 hover:text-green-900 transition-colors mb-2 inline-block"
-          >
-            {categoryName}
-          </Link>
-        )}
-
-        <h3 className="font-bold text-gray-900 text-lg leading-snug mb-2">
-          <Link
-            href={`/recipes/${slug}`}
-            className="hover:text-green-800 transition-colors focus-visible:outline-none focus-visible:underline"
-          >
+          <h3 className="font-display text-xl font-bold text-gray-900 leading-tight mb-1">
             {title}
-          </Link>
-        </h3>
-
-        {description && (
-          <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">
-            {description}
-          </p>
-        )}
-
+          </h3>
+          {description && (
+            <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 max-w-[160px]">
+              {description}
+            </p>
+          )}
+        </div>
       </div>
-    </article>
+    </Link>
   )
 }
-

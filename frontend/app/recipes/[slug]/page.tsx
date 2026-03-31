@@ -85,14 +85,27 @@ export default async function RecipePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ── Zdjęcie główne ── */}
-      <div className="relative h-64 sm:h-80 lg:h-96 bg-gray-100 overflow-hidden">
+      {/* ── Zdjęcie główne z organiczną dolną krawędzią ── */}
+      <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden">
         {recipe.image_url ? (
           <Image src={recipe.image_url} alt={recipe.title} fill priority className="object-cover" />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-amber-100 via-orange-200 to-red-200" />
+          <div className="w-full h-full bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+
+        {/* Organic bottom edge */}
+        <div className="absolute bottom-0 left-0 right-0 leading-none" aria-hidden="true">
+          <svg
+            viewBox="0 0 1440 80"
+            fill="var(--color-cream)"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            className="w-full h-8 md:h-12 lg:h-16"
+          >
+            <path d="M0,50 C200,80 400,10 600,40 C800,70 1000,15 1200,45 C1340,65 1400,30 1440,45 L1440,80 L0,80 Z" />
+          </svg>
+        </div>
       </div>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -120,12 +133,12 @@ export default async function RecipePage({ params }: Props) {
           {category && (
             <Link
               href={`/categories/${category.slug}`}
-              className="text-xs font-bold uppercase tracking-widest text-green-700 hover:text-green-900 transition-colors mb-3 inline-block"
+              className="text-xs font-bold uppercase tracking-widest text-basil hover:text-basil-dark transition-colors mb-3 inline-block"
             >
               {category.name}
             </Link>
           )}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-5">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight mb-5 tracking-tight">
             {recipe.title}
           </h1>
           {recipe.description && (
@@ -134,7 +147,7 @@ export default async function RecipePage({ params }: Props) {
 
           <dl className="flex flex-wrap gap-3">
             {recipe.difficulty && (
-              <div className="flex items-center gap-1.5 px-4 py-2 bg-gray-100 rounded-full text-sm font-medium text-gray-700">
+              <div className="flex items-center gap-1.5 px-4 py-2 bg-basil/8 rounded-full text-sm font-medium text-basil-dark">
                 <DifficultyIcon />
                 <dt className="sr-only">Trudność</dt>
                 <dd className="capitalize">{DIFFICULTY_PL[recipe.difficulty] ?? recipe.difficulty}</dd>
@@ -143,22 +156,30 @@ export default async function RecipePage({ params }: Props) {
           </dl>
         </header>
 
-        <div className="h-px bg-gray-100 mb-10" role="separator" />
+        <div className="h-px bg-stone-100 mb-10" role="separator" />
 
         {/* ── Składniki + Przygotowanie ── */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {ingredients.length > 0 && (
             <section className="lg:col-span-2" aria-labelledby="ingredients-heading">
-              <h2 id="ingredients-heading" className="text-xl font-black text-gray-900 mb-5 flex items-center gap-2">
-                <span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-black" style={{ backgroundColor: "#1e6020" }} aria-hidden="true">
+              <h2 id="ingredients-heading" className="font-display text-xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+                <span
+                  className="w-7 h-7 flex items-center justify-center text-white text-xs font-black bg-basil"
+                  style={{ borderRadius: "50% 50% 30% 70% / 60% 40% 60% 40%" }}
+                  aria-hidden="true"
+                >
                   <ListIcon />
                 </span>
                 Składniki
               </h2>
               <ul role="list" className="space-y-3" aria-label="Lista składników">
                 {ingredients.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-gray-700 text-sm leading-relaxed">
-                    <span className="mt-1.5 w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: "#f5b731" }} aria-hidden="true" />
+                  <li key={i} className="group flex items-start gap-3 text-gray-700 text-sm leading-relaxed">
+                    <span
+                      className="mt-1.5 w-2 h-2 shrink-0 bg-gold blob-on-hover"
+                      style={{ borderRadius: "50% 50% 30% 70% / 60% 40% 60% 40%" }}
+                      aria-hidden="true"
+                    />
                     {item}
                   </li>
                 ))}
@@ -168,18 +189,22 @@ export default async function RecipePage({ params }: Props) {
 
           {directions.length > 0 && (
             <section className="lg:col-span-3" aria-labelledby="directions-heading">
-              <h2 id="directions-heading" className="text-xl font-black text-gray-900 mb-5 flex items-center gap-2">
-                <span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-black" style={{ backgroundColor: "#1e6020" }} aria-hidden="true">
+              <h2 id="directions-heading" className="font-display text-xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+                <span
+                  className="w-7 h-7 flex items-center justify-center text-white text-xs font-black bg-basil"
+                  style={{ borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%" }}
+                  aria-hidden="true"
+                >
                   <StepsIcon />
                 </span>
                 Przygotowanie
               </h2>
               <ol role="list" className="space-y-6" aria-label="Kroki przygotowania">
                 {directions.map((step, i) => (
-                  <li key={i} className="flex gap-4">
+                  <li key={i} className="group flex gap-4">
                     <span
-                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-black text-white mt-0.5"
-                      style={{ backgroundColor: "#1e6020" }}
+                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center text-sm font-black text-white mt-0.5 bg-basil blob-on-hover"
+                      style={{ borderRadius: "50% 50% 30% 70% / 60% 40% 60% 40%" }}
                       aria-label={`Krok ${i + 1}`}
                     >
                       {i + 1}
@@ -193,10 +218,10 @@ export default async function RecipePage({ params }: Props) {
         </div>
 
         {category && (
-          <div className="mt-14 pt-8 border-t border-gray-100">
+          <div className="mt-14 pt-8 border-t border-stone-100">
             <Link
               href={`/categories/${category.slug}`}
-              className="inline-flex items-center gap-2 text-green-700 font-semibold hover:text-green-900 transition-colors"
+              className="inline-flex items-center gap-2 text-basil font-semibold hover:text-basil-dark transition-colors"
             >
               <ArrowLeftIcon />
               Więcej przepisów z kategorii {category.name}
