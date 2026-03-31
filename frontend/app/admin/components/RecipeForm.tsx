@@ -133,7 +133,7 @@ export default function RecipeForm({
               placeholder="placki-ziemniaczane"
             />
             <p className="text-xs text-gray-400 mt-1">
-              URL: /recipes/<span className="font-medium">{slug || "…"}</span>
+              URL: /przepisy/<span className="font-medium">{slug || "…"}</span>
             </p>
           </div>
 

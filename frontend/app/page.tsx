@@ -149,7 +149,7 @@ export default async function HomePage() {
           {/* Right: CTAs */}
           <div className="order-2 lg:order-3 flex flex-col items-start lg:items-stretch gap-3">
             <Link
-              href="/recipes"
+              href="/przepisy"
               className="inline-flex items-center justify-between gap-3 px-6 py-3.5 rounded-full bg-white text-basil-dark font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-basil"
             >
               Przeglądaj przepisy
@@ -192,7 +192,7 @@ export default async function HomePage() {
               </h2>
               <p className="text-gray-500 text-base">Przefiltrowane według nastroju i pory dnia</p>
             </div>
-            <Link href="/categories" className="shrink-0 inline-flex items-center gap-1.5 text-basil font-semibold hover:text-basil-dark transition-colors text-sm">
+            <Link href="/kategorie" className="shrink-0 inline-flex items-center gap-1.5 text-basil font-semibold hover:text-basil-dark transition-colors text-sm">
               Wszystkie kategorie
               <ArrowRightIcon />
             </Link>
@@ -239,7 +239,7 @@ export default async function HomePage() {
               {/* TOP-LEFT: Featured recipe — full image + SVG blob as text background */}
               {featured && (
                 <Link
-                  href={`/recipes/${featured.slug}`}
+                  href={`/przepisy/${featured.slug}`}
                   className="pl-6  group lg:col-span-7 relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
                 >
                   {/* Full bleed image */}
@@ -285,7 +285,7 @@ export default async function HomePage() {
               {/* TOP-RIGHT: Second recipe — image overlay */}
               {second && (
                 <Link
-                  href={`/recipes/${second.slug}`}
+                  href={`/przepisy/${second.slug}`}
                   className="group lg:col-span-5 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
                 >
                   <div className="absolute inset-0">
@@ -317,7 +317,7 @@ export default async function HomePage() {
               {/* BOTTOM: Third recipe — full width */}
               {third && (
                 <Link
-                  href={`/recipes/${third.slug}`}
+                  href={`/przepisy/${third.slug}`}
                   className="group lg:col-span-12 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
                 >
                   <div className="absolute inset-0">
@@ -354,7 +354,7 @@ export default async function HomePage() {
 
             <div className="mt-8 text-center">
               <Link
-                href="/recipes"
+                href="/przepisy"
                 className="inline-flex items-center gap-2 text-basil font-semibold hover:text-basil-dark transition-colors text-sm"
               >
                 Wszystkie przepisy

@@ -36,7 +36,7 @@ export default function CategoryCard({
 
   return (
     <Link
-      href={`/categories/${slug}`}
+      href={`/kategorie/${slug}`}
       className="group relative block rounded-2xl overflow-hidden aspect-[4/3] hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
       aria-label={`${name} – ${pluralPrzepis(n)}`}
     >

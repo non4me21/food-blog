@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation"
 import { useState } from "react"
 
 const NAV_LINKS = [
-  { href: "/recipes", label: "Przepisy", icon: BookIcon },
-  { href: "/categories", label: "Kategorie", icon: GridIcon },
+  { href: "/przepisy", label: "Przepisy", icon: BookIcon },
+  { href: "/kategorie", label: "Kategorie", icon: GridIcon },
 ]
 
 export default function Navbar() {

@@ -102,7 +102,7 @@ export async function createRecipeAction(
   }
 
   revalidatePath("/")
-  revalidatePath("/recipes")
+  revalidatePath("/przepisy")
   redirect("/admin")
 }
 
@@ -152,15 +152,15 @@ export async function updateRecipeAction(
   }
 
   revalidatePath("/")
-  revalidatePath("/recipes")
-  revalidatePath(`/recipes/${slug}`)
+  revalidatePath("/przepisy")
+  revalidatePath(`/przepisy/${slug}`)
   redirect("/admin")
 }
 
 export async function deleteRecipeAction(id: number) {
   await db.delete(recipes).where(eq(recipes.id, id))
   revalidatePath("/")
-  revalidatePath("/recipes")
+  revalidatePath("/przepisy")
   redirect("/admin")
 }
 
@@ -170,7 +170,7 @@ export async function togglePublishedAction(id: number, published: boolean) {
     .set({ published, published_at: published ? new Date() : null })
     .where(eq(recipes.id, id))
   revalidatePath("/")
-  revalidatePath("/recipes")
+  revalidatePath("/przepisy")
 }
 
 /* ── Categories ── */
@@ -198,7 +198,7 @@ export async function createCategoryAction(
   }
 
   revalidatePath("/")
-  revalidatePath("/categories")
+  revalidatePath("/kategorie")
   redirect("/admin/categories")
 }
 
@@ -229,14 +229,14 @@ export async function updateCategoryAction(
   }
 
   revalidatePath("/")
-  revalidatePath("/categories")
-  revalidatePath(`/categories/${slug}`)
+  revalidatePath("/kategorie")
+  revalidatePath(`/kategorie/${slug}`)
   redirect("/admin/categories")
 }
 
 export async function deleteCategoryAction(id: number) {
   await db.delete(categories).where(eq(categories.id, id))
   revalidatePath("/")
-  revalidatePath("/categories")
+  revalidatePath("/kategorie")
   redirect("/admin/categories")
 }

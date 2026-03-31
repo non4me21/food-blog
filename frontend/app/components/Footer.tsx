@@ -31,12 +31,12 @@ export default function Footer() {
             </h2>
             <ul className="space-y-2 text-sm text-white/50" role="list">
               <li>
-                <Link href="/recipes" className="hover:text-white transition-colors">
+                <Link href="/przepisy" className="hover:text-white transition-colors">
                   Wszystkie Przepisy
                 </Link>
               </li>
               <li>
-                <Link href="/categories" className="hover:text-white transition-colors">
+                <Link href="/kategorie" className="hover:text-white transition-colors">
                   Kategorie
                 </Link>
               </li>
