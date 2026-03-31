@@ -159,7 +159,8 @@ export default async function RecipePage({ params }: Props) {
                   <dt className="sr-only">Trudność</dt>
                   <dd className="relative group/diff font-mono tracking-widest cursor-default">
                     {DIFFICULTY_DOTS[recipe.difficulty] ?? recipe.difficulty}
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-900 text-white text-xs font-mono font-medium whitespace-nowrap opacity-0 group-hover/diff:opacity-100 transition-opacity pointer-events-none">
+                    <span className="ml-1 lg:hidden">{DIFFICULTY_LABEL[recipe.difficulty] ?? recipe.difficulty}</span>
+                    <span className="hidden lg:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded bg-gray-900 text-white text-xs font-mono font-medium whitespace-nowrap opacity-0 group-hover/diff:opacity-100 transition-opacity pointer-events-none">
                       {DIFFICULTY_LABEL[recipe.difficulty] ?? recipe.difficulty}
                     </span>
                   </dd>
