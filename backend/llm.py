@@ -27,7 +27,8 @@ Return ONLY valid JSON in this exact format:
     "is_halal": false,
     "is_kosher": false
   }},
-  "search_string": "a short description suitable for semantic search"
+  "search_string": "a short description suitable for semantic search",
+  "language": "en"
 }}
 
 Rules:
@@ -41,14 +42,15 @@ Rules:
 - "filters.is_nut_free": true if user says no nuts, nut-free
 - "filters.is_halal": true if user says halal
 - "filters.is_kosher": true if user says kosher
-- "search_string": a clean, concise phrase for embedding-based search
+- "search_string": ALWAYS in English — a clean, concise phrase for embedding-based search
+- "language": ISO 639-1 code of the user's query language (e.g. "pl", "en", "de")
 - If the query makes no sense as a food/recipe request, return: {{"error": "Cannot parse as recipe query"}}
 - Return ONLY the JSON, no markdown, no explanation"""
 
 REFORMAT_PROMPT = """You are a recipe assistant. The user searched for: "{query}"
 
 Below are {n} recipes. Return ONLY a valid JSON array with exactly {n} objects. No markdown, no explanation.
-
+{language_instruction}
 Each object must have these fields:
 - "title": recipe name (string)
 - "description": one sentence explaining why this matches the user's request (string)
@@ -86,8 +88,8 @@ def parse_query(user_query):
     return parsed
 
 
-def reformat_recipes(recipes, user_query):
-    logger.info(f"Reformatting {len(recipes)} recipes in one API call")
+def reformat_recipes(recipes, user_query, language="en"):
+    logger.info(f"Reformatting {len(recipes)} recipes in one API call (language: {language})")
     blocks = []
     for i, recipe in enumerate(recipes, start=1):
         blocks.append(RECIPE_BLOCK_TEMPLATE.format(
@@ -100,9 +102,11 @@ def reformat_recipes(recipes, user_query):
             ingredients=recipe.get("ingredients", "N/A"),
             directions=recipe.get("directions", "N/A"),
         ))
+    language_instruction = f"\nAll text fields in your response must be in the language with ISO 639-1 code: {language}.\n" if language != "en" else ""
     prompt = REFORMAT_PROMPT.format(
         query=user_query,
         n=len(recipes),
+        language_instruction=language_instruction,
         recipes_block="\n\n".join(blocks),
     )
     response = _model.generate_content(prompt)
