@@ -25,9 +25,10 @@ async function getCategoriesWithCount() {
       categories.name,
       categories.slug,
       categories.description,
-      categories.image_url
+      categories.image_url,
+      categories.display_order
     )
-    .orderBy(categories.name)
+    .orderBy(categories.display_order, categories.name)
 }
 
 async function getHeroImages() {

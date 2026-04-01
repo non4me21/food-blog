@@ -8,6 +8,7 @@ type DefaultValues = {
   slug?: string
   description?: string
   image_url?: string | null
+  display_order?: number
 }
 
 type Props = {
@@ -73,6 +74,21 @@ export default function AddCategoryForm({ serverAction, defaultValues = {}, subm
             placeholder="sniadania"
           />
         </div>
+      </div>
+
+      <div className="w-40">
+        <label htmlFor="cat-order" className="block text-sm font-semibold text-gray-700 mb-1.5">
+          Kolejność wyświetlania
+        </label>
+        <input
+          id="cat-order"
+          name="display_order"
+          type="number"
+          min={0}
+          defaultValue={defaultValues.display_order ?? 0}
+          className="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-700 text-gray-900"
+        />
+        <p className="text-xs text-gray-400 mt-1">Mniejsza liczba = wyżej na liście</p>
       </div>
 
       <div>

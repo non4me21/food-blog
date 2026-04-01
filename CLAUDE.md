@@ -9,15 +9,15 @@ using natural language via semantic search powered by LLMs.
 **Stack:**
 - `Next.js 15` — frontend + blog API routes (App Router, TypeScript, Tailwind CSS)
 - `Drizzle ORM` + `postgres.js` — type-safe DB client for Next.js ↔ PostgreSQL
-- `PostgreSQL 16` — blog recipes database
+- `PostgreSQL 18` — blog recipes database
 - `Railway Bucket` — S3-compatible object storage for recipe photos (Tigris backend)
 - `sentence-transformers` — local embeddings (all-MiniLM-L6-v2)
-- `ChromaDB` — vector database for AI search
+- `ChromaDB` — vector database for AI search (persistent, stored in `backend/persistent/chroma_db/`)
 - `FastAPI` — AI search backend API
 - `Gemini API` — LLM for query parsing and recipe reformatting
-- `Redis` — caching layer for AI search results
+- `Redis` — caching layer for AI search results (7-day TTL)
 
-**Dataset:** ~62k recipes CSV
+**Dataset:** ~62k recipes CSV (`backend/persistent/data/recipes.csv`)
 Key fields used: `recipe_title`, `ingredient_text`, `directions_text`, `est_prep_time_min`,
 `est_cook_time_min`, `cuisine_list`, `category`, `difficulty`, `cook_speed`, `main_ingredient`,
 `primary_taste`, `dietary_profile`, `healthiness_score`, `health_level`,
@@ -31,6 +31,21 @@ Key fields used: `recipe_title`, `ingredient_text`, `directions_text`, `est_prep
 project/
 ├── frontend/                  ← Next.js app
 │   ├── app/                   ← App Router pages and layouts
+│   │   ├── admin/             ← Admin panel (protected)
+│   │   │   ├── components/    ← DeleteButton, ImageUpload, RecipeForm
+│   │   │   ├── categories/    ← Category CRUD pages
+│   │   │   ├── recipes/       ← Recipe CRUD pages
+│   │   │   ├── login/         ← Auth page
+│   │   │   ├── actions.ts     ← All server actions
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx       ← Admin dashboard
+│   │   ├── api/upload/        ← Presigned URL generation for S3
+│   │   ├── components/        ← CategoryCard, Footer, Navbar, RecipeCard, ShareButton, ScrollProgress
+│   │   ├── kategorie/         ← /kategorie + /kategorie/[slug]
+│   │   ├── przepisy/          ← /przepisy + /przepisy/[slug]
+│   │   ├── przepis-z-ai/      ← AI search page
+│   │   ├── layout.tsx
+│   │   └── page.tsx           ← Homepage
 │   ├── db/
 │   │   ├── schema.ts          ← Drizzle table definitions
 │   │   ├── index.ts           ← DB client singleton
@@ -39,17 +54,48 @@ project/
 │   ├── Dockerfile
 │   ├── drizzle.config.ts
 │   └── next.config.ts
-└── backend/                   ← FastAPI AI search service
-    ├── main.py
-    ├── search.py
-    ├── llm.py
-    ├── embeddings.py
-    ├── ingest.py
-    ├── config.py
-    ├── models.py
-    ├── requirements.txt
-    └── Dockerfile
+├── backend/                   ← FastAPI AI search service
+│   ├── main.py                ← FastAPI app, CORS, /search + /health endpoints
+│   ├── search.py              ← ChromaDB search logic
+│   ├── llm.py                 ← Gemini query parsing + recipe reformatting
+│   ├── embeddings.py          ← sentence-transformers embedding
+│   ├── ingest.py              ← one-time CSV → ChromaDB ingestion script
+│   ├── config.py              ← constants
+│   ├── models.py              ← Pydantic request/response models
+│   ├── persistent/            ← mounted volume (not committed)
+│   │   ├── chroma_db/         ← ChromaDB vector store
+│   │   └── data/recipes.csv   ← source dataset
+│   ├── requirements.txt
+│   └── Dockerfile
+├── scripts/
+│   ├── dump_railway.sh        ← pg_dump from Railway → scripts/dumps/
+│   └── restore_local.sh       ← restore latest dump to local postgres
+├── Makefile                   ← make dump / restore / sync / migrate / generate
+└── docker-compose.yml
 ```
+
+---
+
+## Routes
+
+| Route | Type | Description |
+|-------|------|-------------|
+| `/` | public | Homepage — categories grid + latest recipes |
+| `/przepisy` | public | All recipes listing |
+| `/przepisy/[slug]` | public | Recipe detail page |
+| `/kategorie` | public | Categories listing |
+| `/kategorie/[slug]` | public | Recipes filtered by category |
+| `/przepis-z-ai` | public | AI-powered recipe search |
+| `/api/upload` | API | POST — generates S3 presigned upload URL |
+| `/admin` | protected | Admin dashboard |
+| `/admin/login` | protected | Admin auth |
+| `/admin/recipes/new` | protected | Create recipe |
+| `/admin/recipes/[id]/edit` | protected | Edit recipe |
+| `/admin/categories` | protected | Manage categories |
+| `/admin/categories/[id]/edit` | protected | Edit category |
+
+Admin is protected via a password stored in `ADMIN_PASSWORD` env var, verified with a SHA-256
+cookie session token.
 
 ---
 
@@ -58,27 +104,35 @@ project/
 ```
 User
   │
-  ├── /blog, /recipes/[slug]
+  ├── /przepisy, /kategorie, /przepis-z-ai, /
   │       ↓
-  │   Next.js (App Router)
+  │   Next.js (App Router, server components)
   │       ↓
   │   Drizzle ORM → PostgreSQL (own blog recipes)
   │
-  └── /search
+  ├── /api/upload
+  │       ↓
+  │   Next.js API route → Railway Bucket (presigned URL)
+  │
+  └── /przepis-z-ai
           ↓
       Next.js page (client-side fetch via NEXT_PUBLIC_BACKEND_URL)
           ↓ (http://localhost:8000 locally, Railway URL in prod)
       FastAPI AI search
           ↓
+      Redis cache check (key = normalized query, TTL = 7 days)
+          ↓ (cache miss)
       Gemini parses query → { wanted, excluded, filters }
           ↓
-      Embed with sentence-transformers
+      Embed with sentence-transformers (all-MiniLM-L6-v2)
           ↓
       ChromaDB semantic search (n_results=30) + metadata filtering
           ↓
       Post-filter: excluded ingredients + dietary keywords
           ↓
       Top 3 results → Gemini reformats → JSON response
+          ↓
+      Store in Redis cache
 ```
 
 ### Photo Storage — Railway Bucket
@@ -92,12 +146,15 @@ User
 
 ## Services (Docker Compose)
 
-| Service    | Image / Build    | Port | Purpose                        |
-|------------|------------------|------|--------------------------------|
-| next-app   | ./frontend       | 3000 | Next.js blog + AI search UI    |
-| backend    | ./backend        | 8000 | FastAPI AI search              |
-| postgres   | postgres:16-alpine | 5432 | Blog recipes DB              |
-| redis      | redis:7-alpine   | —    | AI search cache                |
+| Service    | Image / Build      | Port | Purpose                        |
+|------------|--------------------|------|--------------------------------|
+| next-app   | ./frontend         | 3000 | Next.js blog + AI search UI    |
+| backend    | ./backend          | 8000 | FastAPI AI search              |
+| postgres   | postgres:18-alpine | 5432 | Blog recipes DB                |
+| redis      | redis:7-alpine     | —    | AI search cache                |
+
+ChromaDB runs embedded inside the `backend` container (no separate service).
+Data persists via a bind mount: `./backend/persistent` → `/app/persistent`.
 
 ---
 
@@ -140,7 +197,7 @@ Act as a senior software engineer, not a code generator. Before implementing a r
 
 ## Configuration & Secrets
 
-- All secrets via `.env` file + `python-dotenv` (backend) / `process.env` (Next.js)
+- All secrets via `.env` file in project root + `python-dotenv` (backend) / `process.env` (Next.js)
 - Non-secret constants (model names, paths, limits) as `UPPER_CASE` inline at top of file
 - Never hardcode API keys
 - `.env.example` always up to date
@@ -151,9 +208,19 @@ Act as a senior software engineer, not a code generator. Before implementing a r
 
 - Drizzle ORM with `postgres.js` driver
 - Schema defined in `frontend/db/schema.ts`
-- Migrations generated with `drizzle-kit generate`, applied with `drizzle-kit migrate`
 - Migration files committed to repo (`frontend/db/migrations/`)
 - DB client singleton in `frontend/db/index.ts`
+
+### Migration workflow (run from project root)
+
+```bash
+make generate   # generate migration after schema change (drizzle-kit generate)
+make migrate    # apply pending migrations to local DB (requires Docker Compose up)
+```
+
+`make migrate` automatically rewrites `@postgres` → `@localhost` in `DATABASE_URL`,
+because `.env` uses the Docker service hostname which isn't resolvable outside the container.
+`drizzle.config.ts` loads `.env` automatically when `DATABASE_URL` is not already set in the environment.
 
 ---
 
@@ -177,7 +244,7 @@ Act as a senior software engineer, not a code generator. Before implementing a r
 
 ## Dataset Ingestion
 
-- One-time script to load dataset into ChromaDB
+- One-time script to load dataset into ChromaDB (`backend/ingest.py`)
 - No re-indexing logic needed for now
 - Each recipe stored as:
   - `documents` — `ingredient_text` (clean, lowercase, no quantities — used for semantic search)
@@ -192,14 +259,23 @@ Act as a senior software engineer, not a code generator. Before implementing a r
 ## Deployment (Railway)
 
 Four services deployed on Railway:
-1. **next-app** — Next.js, `output: "standalone"`, Dockerfile multi-stage build
+1. **next-app** — Next.js, single-stage Dockerfile; `npm run build` runs in CMD (not RUN) because
+   `next build` calls `generateStaticParams` which queries the DB — the DB is only available at
+   runtime, not during `docker build`. Do not move the build step to RUN/image-build time.
+   Migrations also run in CMD (`drizzle-kit migrate`) before the build.
 2. **backend** — FastAPI, existing Dockerfile
-3. **postgres** — Railway managed PostgreSQL (or postgres:16-alpine Docker service)
-4. **redis** — Railway managed Redis (or redis:7-alpine Docker service)
+3. **postgres** — Railway managed PostgreSQL
+4. **redis** — Railway managed Redis
 
 Plus one Railway Bucket + `public-bucket-urls` proxy template for photo serving.
 
-Keep CORS and endpoint structure clean from the start.
+### DB sync (Railway → local)
+
+```bash
+make dump     # pg_dump from Railway to scripts/dumps/
+make restore  # restore latest dump to local postgres
+make sync     # dump + restore in one step
+```
 
 ---
 

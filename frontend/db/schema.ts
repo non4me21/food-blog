@@ -1,11 +1,12 @@
 import { boolean, integer, jsonb, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
 
 export const categories = pgTable("categories", {
-  id:          serial("id").primaryKey(),
-  name:        text("name").notNull().unique(),
-  slug:        text("slug").notNull().unique(),
-  description: text("description"),
-  image_url:   text("image_url"),
+  id:            serial("id").primaryKey(),
+  name:          text("name").notNull().unique(),
+  slug:          text("slug").notNull().unique(),
+  description:   text("description"),
+  image_url:     text("image_url"),
+  display_order: integer("display_order").notNull().default(0),
 })
 
 export const recipes = pgTable("recipes", {
