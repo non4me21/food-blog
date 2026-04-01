@@ -4,6 +4,7 @@ import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
 import { eq, count, and, desc, isNotNull } from "drizzle-orm"
 import CategoryCard from "@/app/components/CategoryCard"
+import StatsCard from "@/app/components/StatsCard"
 
 async function getCategoriesWithCount() {
   return db
@@ -56,17 +57,29 @@ async function getLatestRecipes() {
     .leftJoin(categories, eq(recipes.category_id, categories.id))
     .where(eq(recipes.published, true))
     .orderBy(desc(recipes.published_at))
-    .limit(3)
+    .limit(2)
+}
+
+async function getStats() {
+  const [recipeResult, categoryResult] = await Promise.all([
+    db.select({ value: count() }).from(recipes).where(eq(recipes.published, true)),
+    db.select({ value: count() }).from(categories),
+  ])
+  return {
+    recipes: Number(recipeResult[0].value),
+    categories: Number(categoryResult[0].value),
+  }
 }
 
 export default async function HomePage() {
-  const [categoriesData, heroImages, latestRecipes] = await Promise.all([
+  const [categoriesData, heroImages, latestRecipes, stats] = await Promise.all([
     getCategoriesWithCount(),
     getHeroImages(),
     getLatestRecipes(),
+    getStats(),
   ])
 
-  const [featured, second, third] = latestRecipes
+  const [featured, second] = latestRecipes
 
   return (
     <>
@@ -235,15 +248,14 @@ export default async function HomePage() {
             </div>
 
             {/* Bento grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 auto-rows-[260px]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 auto-rows-[210px]">
 
-              {/* TOP-LEFT: Featured recipe — full image + SVG blob as text background */}
+              {/* LEFT: Featured recipe — full image + SVG blob as text background, spans 2 rows */}
               {featured && (
                 <Link
                   href={`/przepisy/${featured.slug}`}
-                  className="pl-6  group lg:col-span-7 relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
+                  className="group lg:col-span-7 lg:row-span-2 relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
                 >
-                  {/* Full bleed image */}
                   <div className="absolute inset-0">
                     {featured.image_url ? (
                       <Image
@@ -256,8 +268,6 @@ export default async function HomePage() {
                       <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-orange-100" />
                     )}
                   </div>
-
-                  {/* Text with blob as background-image — auto-sizes to content */}
                   <div className="absolute inset-y-0 left-2 flex items-center">
                     <div
                       className="px-12 py-14 drop-shadow-lg"
@@ -283,13 +293,16 @@ export default async function HomePage() {
                 </Link>
               )}
 
-              {/* TOP-RIGHT: Second recipe — image overlay */}
+              {/* TOP-RIGHT: Stats */}
+              <StatsCard recipes={stats.recipes} categories={stats.categories} />
+
+              {/* BOTTOM-RIGHT: Second recipe with description quote */}
               {second && (
                 <Link
                   href={`/przepisy/${second.slug}`}
-                  className="group lg:col-span-5 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
+                  className="group lg:col-span-5 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
                 >
-                  <div className="absolute inset-0">
+                  <div className="relative w-2/5 shrink-0">
                     {second.image_url ? (
                       <Image
                         src={second.image_url}
@@ -300,54 +313,30 @@ export default async function HomePage() {
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-amber-50 to-rose-100" />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
                   </div>
-                  <div className="relative h-full flex flex-col justify-end p-5">
-                    {second.categoryName && (
-                      <span className="text-xs font-black tracking-widest uppercase text-white/60 block mb-1">
-                        {second.categoryName}
+                  <div className="flex-1 bg-cream p-5 flex flex-col justify-between min-w-0">
+                    <div>
+                      <span className="font-display text-3xl text-basil/20 leading-none select-none" aria-hidden="true">"</span>
+                      {second.description && (
+                        <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 -mt-2">
+                          {second.description}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      {second.categoryName && (
+                        <span className="text-xs font-black tracking-widest uppercase text-basil/70 block mb-1">
+                          {second.categoryName}
+                        </span>
+                      )}
+                      <h3 className="font-display text-base font-extrabold text-gray-900 leading-tight tracking-tight mb-2">
+                        {second.title}
+                      </h3>
+                      <span className="inline-flex items-center gap-1.5 text-basil font-semibold text-xs group-hover:gap-2.5 transition-all">
+                        Zobacz przepis
+                        <ArrowRightIcon />
                       </span>
-                    )}
-                    <h3 className="font-display text-xl font-extrabold text-white leading-tight tracking-tight">
-                      {second.title}
-                    </h3>
-                  </div>
-                </Link>
-              )}
-
-              {/* BOTTOM: Third recipe — full width */}
-              {third && (
-                <Link
-                  href={`/przepisy/${third.slug}`}
-                  className="group lg:col-span-12 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
-                >
-                  <div className="absolute inset-0">
-                    {third.image_url ? (
-                      <Image
-                        src={third.image_url}
-                        alt={third.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full" style={{ background: "linear-gradient(135deg, var(--color-basil-dark), var(--color-basil))" }} />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
-                  </div>
-                  <div className="relative h-full flex flex-col justify-end p-6">
-                    {third.categoryName && (
-                      <span className="text-xs font-black tracking-widest uppercase text-white/60 block mb-1">
-                        {third.categoryName}
-                      </span>
-                    )}
-                    <h3 className="font-display text-2xl font-extrabold text-white leading-tight tracking-tight mb-1">
-                      {third.title}
-                    </h3>
-                    {third.description && (
-                      <p className="text-white/65 text-sm leading-relaxed line-clamp-1 max-w-xl">
-                        {third.description}
-                      </p>
-                    )}
+                    </div>
                   </div>
                 </Link>
               )}

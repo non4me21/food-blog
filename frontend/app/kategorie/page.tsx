@@ -3,7 +3,7 @@ import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
 import { eq, count, and } from "drizzle-orm"
 import CategoryCard from "@/app/components/CategoryCard"
-import { pluralPrzepis } from "@/lib/utils"
+import { pluralPrzepis, pluralKategoriaLabel } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Kategorie",
@@ -73,15 +73,7 @@ export default async function CategoriesPage() {
             następną kulinarną przygodę.
           </p>
           <p className="mt-4 text-white/50 text-sm font-medium">
-            {allCategories.length}{" "}
-            {allCategories.length === 1
-              ? "kategoria"
-              : allCategories.length % 10 >= 2 &&
-                allCategories.length % 10 <= 4 &&
-                (allCategories.length % 100 < 10 ||
-                  allCategories.length % 100 >= 20)
-              ? "kategorie"
-              : "kategorii"}
+            {allCategories.length} {pluralKategoriaLabel(allCategories.length)}
           </p>
         </div>
 
