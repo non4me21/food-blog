@@ -135,7 +135,7 @@ export default async function RecipePage({ params }: Props) {
         </nav>
 
         {/* ── Nagłówek ── */}
-        <header className="mb-8">
+        <header className="mb-10">
           {category && (
             <Link
               href={`/kategorie/${category.slug}`}
@@ -174,7 +174,14 @@ export default async function RecipePage({ params }: Props) {
           </div>
         </header>
 
-        <div className="h-px bg-stone-100 mb-10" role="separator" />
+        {recipe.notes && (
+          <section className="mb-10" aria-labelledby="notes-heading">
+            <h2 id="notes-heading" className="font-display text-base font-bold text-gray-700 mb-1">
+              Info
+            </h2>
+            <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">{recipe.notes}</p>
+          </section>
+        )}
 
         {/* ── Składniki + Przygotowanie ── */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">

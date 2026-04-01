@@ -19,6 +19,7 @@ export const recipes = pgTable("recipes", {
   difficulty:    text("difficulty"),
   category_id:   integer("category_id").references(() => categories.id, { onDelete: "set null" }),
   image_url:     text("image_url"),
+  notes:         text("notes"),
   published:     boolean("published").default(false),
   published_at:  timestamp("published_at", { withTimezone: true }),
   created_at:    timestamp("created_at", { withTimezone: true }).defaultNow(),

@@ -9,6 +9,7 @@ type DefaultValues = {
   title?: string
   slug?: string
   description?: string
+  notes?: string | null
   category_id?: number | null
   difficulty?: string | null
   image_url?: string | null
@@ -150,6 +151,24 @@ export default function RecipeForm({
               className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent text-gray-900 resize-y"
               placeholder="Krótki opis przepisu widoczny na kartach i w SEO"
             />
+          </div>
+
+          {/* Notatki */}
+          <div>
+            <label htmlFor="notes" className="block text-sm font-semibold text-gray-700 mb-1.5">
+              Notatki
+            </label>
+            <textarea
+              id="notes"
+              name="notes"
+              rows={3}
+              defaultValue={defaultValues.notes ?? ""}
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent text-gray-900 resize-y"
+              placeholder="np. Wychodzi ok. 12 sztuk, blaszkę 20x30 cm wyłóż papierem"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Widoczne na stronie przepisu przed składnikami i krokami.
+            </p>
           </div>
         </div>
       </section>
