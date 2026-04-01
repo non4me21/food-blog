@@ -184,12 +184,16 @@ export async function createCategoryAction(
 
   const slug = (formData.get("slug") as string)?.trim() || toSlug(name)
 
+  const displayOrderStr = formData.get("display_order") as string
+  const displayOrder = displayOrderStr ? parseInt(displayOrderStr) : 0
+
   try {
     await db.insert(categories).values({
       name,
       slug,
       description: (formData.get("description") as string) || null,
       image_url: (formData.get("image_url") as string) || null,
+      display_order: isNaN(displayOrder) ? 0 : displayOrder,
     })
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e)
@@ -212,6 +216,9 @@ export async function updateCategoryAction(
 
   const slug = (formData.get("slug") as string)?.trim() || toSlug(name)
 
+  const displayOrderStr = formData.get("display_order") as string
+  const displayOrder = displayOrderStr ? parseInt(displayOrderStr) : 0
+
   try {
     await db
       .update(categories)
@@ -220,6 +227,7 @@ export async function updateCategoryAction(
         slug,
         description: (formData.get("description") as string) || null,
         image_url: (formData.get("image_url") as string) || null,
+        display_order: isNaN(displayOrder) ? 0 : displayOrder,
       })
       .where(eq(categories.id, id))
   } catch (e: unknown) {

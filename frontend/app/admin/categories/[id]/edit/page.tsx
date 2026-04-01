@@ -29,6 +29,7 @@ export default async function EditCategoryPage({ params }: { params: Promise<{ i
             ...category,
             description: category.description ?? undefined,
             image_url: category.image_url ?? undefined,
+            display_order: category.display_order,
           }}
           submitLabel="Zapisz zmiany"
         />

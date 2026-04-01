@@ -14,12 +14,13 @@ async function getCategoriesWithCount() {
       name: categories.name,
       slug: categories.slug,
       description: categories.description,
+      display_order: categories.display_order,
       recipeCount: count(recipes.id),
     })
     .from(categories)
     .leftJoin(recipes, eq(recipes.category_id, categories.id))
-    .groupBy(categories.id, categories.name, categories.slug, categories.description)
-    .orderBy(categories.name)
+    .groupBy(categories.id, categories.name, categories.slug, categories.description, categories.display_order)
+    .orderBy(categories.display_order, categories.name)
 }
 
 export default async function CategoriesPage() {
@@ -49,6 +50,7 @@ export default async function CategoriesPage() {
                   )}
                 </div>
                 <div className="flex items-center gap-4 shrink-0">
+                  <span className="text-xs text-gray-400 font-mono" title="Kolejność wyświetlania">#{cat.display_order}</span>
                   <span className="text-xs text-gray-400">{Number(cat.recipeCount)} przepisów</span>
                   <a
                     href={`/admin/categories/${cat.id}/edit`}
