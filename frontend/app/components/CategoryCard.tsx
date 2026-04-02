@@ -11,6 +11,7 @@ const CATEGORY_ACCENTS = [
   "#14b8a6",
 ]
 
+
 type CategoryCardProps = {
   slug: string
   name: string
