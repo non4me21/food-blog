@@ -136,7 +136,7 @@ export default async function HomePage() {
               }}
             >
               {heroImages[0] ? (
-                <Image src={heroImages[0]} alt="" fill priority className="object-cover" />
+                <Image src={heroImages[0]} alt="" fill priority fetchPriority="high" className="object-cover" />
               ) : (
                 <div className="w-full h-full" style={{ background: "linear-gradient(135deg, var(--color-gold), var(--color-coral))" }} />
               )}
