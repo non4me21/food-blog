@@ -316,7 +316,7 @@ export default async function HomePage() {
                   </div>
                   <div className="flex-1 bg-cream p-5 flex flex-col justify-between min-w-0">
                     <div>
-                      <span className="font-display text-3xl text-basil/20 leading-none select-none" aria-hidden="true">"</span>
+                      <span className="font-display text-3xl text-basil/20 leading-none select-none" aria-hidden="true">&ldquo;</span>
                       {second.description && (
                         <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 -mt-2">
                           {second.description}

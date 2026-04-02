@@ -3,7 +3,7 @@ import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
 import { eq, count, and } from "drizzle-orm"
 import CategoryCard from "@/app/components/CategoryCard"
-import { pluralPrzepis, pluralKategoriaLabel } from "@/lib/utils"
+import { pluralKategoriaLabel } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Kategorie",
