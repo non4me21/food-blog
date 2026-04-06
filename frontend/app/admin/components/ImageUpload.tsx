@@ -15,6 +15,12 @@ export default function ImageUpload({ initialUrl }: Props) {
 
   async function handleFile(file: File) {
     setError(null)
+
+    if (file.size > 10 * 1024 * 1024) {
+      setError("Zdjęcie nie może przekraczać 10 MB")
+      return
+    }
+
     setUploading(true)
 
     try {
