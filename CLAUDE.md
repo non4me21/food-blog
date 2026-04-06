@@ -283,6 +283,7 @@ make sync     # dump + restore in one step
 
 - Commits per feature
 - Never commit or push without explicit instruction from the user — wait for "commituj", "push" etc.
+- Commit messages and PR titles/descriptions are always in English
 
 ---
 

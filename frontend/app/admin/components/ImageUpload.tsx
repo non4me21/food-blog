@@ -15,6 +15,12 @@ export default function ImageUpload({ initialUrl }: Props) {
 
   async function handleFile(file: File) {
     setError(null)
+
+    if (file.size > 10 * 1024 * 1024) {
+      setError("Zdjęcie nie może przekraczać 10 MB")
+      return
+    }
+
     setUploading(true)
 
     try {
@@ -72,7 +78,7 @@ export default function ImageUpload({ initialUrl }: Props) {
             <>
               <UploadIcon />
               <p className="text-sm font-medium text-gray-600 mt-2">Kliknij lub przeciągnij zdjęcie</p>
-              <p className="text-xs text-gray-400 mt-1">JPG, PNG, WebP</p>
+              <p className="text-xs text-gray-400 mt-1">JPG, PNG, WebP i inne — konwertowane do WebP</p>
             </>
           )}
         </div>
@@ -81,7 +87,7 @@ export default function ImageUpload({ initialUrl }: Props) {
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept="image/*"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0]
