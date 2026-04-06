@@ -8,6 +8,15 @@ import { db } from "@/db"
 import { recipes, categories } from "@/db/schema"
 import { eq } from "drizzle-orm"
 
+async function getCategorySlug(categoryId: number | null): Promise<string | null> {
+  if (!categoryId) return null
+  const [cat] = await db
+    .select({ slug: categories.slug })
+    .from(categories)
+    .where(eq(categories.id, categoryId))
+  return cat?.slug ?? null
+}
+
 function computeSessionToken(password: string): string {
   return createHash("sha256")
     .update(password + ":flavourfind-admin-v1")
@@ -102,8 +111,11 @@ export async function createRecipeAction(
     return "Błąd zapisu do bazy danych."
   }
 
+  const newCategoryId = categoryIdStr ? parseInt(categoryIdStr) : null
+  const categorySlug = await getCategorySlug(newCategoryId)
   revalidatePath("/")
   revalidatePath("/przepisy")
+  if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
   redirect("/admin")
 }
 
@@ -119,6 +131,7 @@ export async function updateRecipeAction(
   const slug = slugInput || toSlug(title)
 
   const categoryIdStr = formData.get("category_id") as string
+  const newCategoryId = categoryIdStr ? parseInt(categoryIdStr) : null
   const published = formData.get("published") === "on"
 
   let ingredients: string[] = []
@@ -129,6 +142,12 @@ export async function updateRecipeAction(
   } catch {
     return "Błąd parsowania składników lub kroków."
   }
+
+  const [oldRecipe] = await db
+    .select({ category_id: recipes.category_id })
+    .from(recipes)
+    .where(eq(recipes.id, id))
+  const oldCategoryId = oldRecipe?.category_id ?? null
 
   try {
     await db
@@ -141,7 +160,7 @@ export async function updateRecipeAction(
         ingredients: ingredients.filter(Boolean),
         directions: directions.filter(Boolean),
         difficulty: (formData.get("difficulty") as string) || null,
-        category_id: categoryIdStr ? parseInt(categoryIdStr) : null,
+        category_id: newCategoryId,
         image_url: (formData.get("image_url") as string) || null,
         published,
         published_at: published ? new Date() : null,
@@ -153,26 +172,52 @@ export async function updateRecipeAction(
     return "Błąd zapisu do bazy danych."
   }
 
+  const [oldCategorySlug, newCategorySlug] = await Promise.all([
+    getCategorySlug(oldCategoryId),
+    getCategorySlug(newCategoryId),
+  ])
+
   revalidatePath("/")
   revalidatePath("/przepisy")
   revalidatePath(`/przepisy/${slug}`)
+  if (oldCategorySlug) revalidatePath(`/kategorie/${oldCategorySlug}`)
+  if (newCategorySlug && newCategorySlug !== oldCategorySlug)
+    revalidatePath(`/kategorie/${newCategorySlug}`)
   redirect("/admin")
 }
 
 export async function deleteRecipeAction(id: number) {
+  const [recipe] = await db
+    .select({ category_id: recipes.category_id, slug: recipes.slug })
+    .from(recipes)
+    .where(eq(recipes.id, id))
+
   await db.delete(recipes).where(eq(recipes.id, id))
+
+  const categorySlug = await getCategorySlug(recipe?.category_id ?? null)
   revalidatePath("/")
   revalidatePath("/przepisy")
+  if (recipe?.slug) revalidatePath(`/przepisy/${recipe.slug}`)
+  if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
   redirect("/admin")
 }
 
 export async function togglePublishedAction(id: number, published: boolean) {
+  const [recipe] = await db
+    .select({ category_id: recipes.category_id, slug: recipes.slug })
+    .from(recipes)
+    .where(eq(recipes.id, id))
+
   await db
     .update(recipes)
     .set({ published, published_at: published ? new Date() : null })
     .where(eq(recipes.id, id))
+
+  const categorySlug = await getCategorySlug(recipe?.category_id ?? null)
   revalidatePath("/")
   revalidatePath("/przepisy")
+  if (recipe?.slug) revalidatePath(`/przepisy/${recipe.slug}`)
+  if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
 }
 
 /* ── Categories ── */
