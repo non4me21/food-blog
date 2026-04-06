@@ -1,5 +1,6 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 import { NextRequest, NextResponse } from "next/server"
+import sharp from "sharp"
 
 const s3 = new S3Client({
   region: "auto",
@@ -18,14 +19,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "file is required" }, { status: 400 })
   }
 
-  const key = `uploads/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`
-  const buffer = Buffer.from(await file.arrayBuffer())
+  const rawBuffer = Buffer.from(await file.arrayBuffer())
+  const webpBuffer = await sharp(rawBuffer).webp({ quality: 80 }).toBuffer()
+
+  const baseName = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_")
+  const key = `uploads/${Date.now()}-${baseName}.webp`
 
   await s3.send(new PutObjectCommand({
     Bucket: process.env.BUCKET_NAME!,
     Key: key,
-    Body: buffer,
-    ContentType: file.type,
+    Body: webpBuffer,
+    ContentType: "image/webp",
   }))
 
   const publicUrl = `${process.env.BUCKET_PUBLIC_URL}/${key}`
