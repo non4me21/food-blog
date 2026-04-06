@@ -25,8 +25,9 @@ export default function ImageUpload({ initialUrl }: Props) {
 
       if (!res.ok) throw new Error("Upload zdjęcia nie powiódł się")
 
-      const { publicUrl } = await res.json()
-      setImageUrl(publicUrl)
+      const data = await res.json()
+      if (data.error) throw new Error(data.error)
+      setImageUrl(data.publicUrl)
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Błąd uploadu")
     } finally {
@@ -81,7 +82,7 @@ export default function ImageUpload({ initialUrl }: Props) {
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept="image/*"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0]
