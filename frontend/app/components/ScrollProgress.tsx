@@ -13,7 +13,7 @@ export default function ScrollProgress() {
       const scrollTop = window.scrollY
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
       if (docHeight <= 0) return
-      const p = scrollTop / docHeight
+      const p = Math.min(1, Math.max(0, scrollTop / docHeight))
       setProgress(p)
       setVisible(scrollTop > 10)
     }
