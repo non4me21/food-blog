@@ -91,19 +91,16 @@ export default async function HomePage() {
           <div className="text-white order-1">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 text-xs font-bold tracking-widest uppercase text-white/60 mb-7 bg-white/10 backdrop-blur-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse" aria-hidden="true" />
-              Świeże i Oryginalne
+              JEDZENIE. I W SUMIE TYLE.
             </span>
             <h1
               id="hero-heading"
               className="font-display text-5xl lg:text-6xl font-extrabold leading-[1.05] mb-6 tracking-tight"
             >
-              Przepisy które{" "}
-              <em className="not-italic text-gold brightness-125">ożywiają</em>{" "}
-              kuchnię
+              Hej, tu Kacper. Tu lądują rzeczy, które warto ugotować.
             </h1>
             <p className="text-white/75 text-base lg:text-lg leading-relaxed max-w-sm">
-              Starannie dobierana kolekcja przepisów — od szybkich kolacji po
-              imponujące desery.
+              Przepisy, które wpadły do mojego życia i zostały. Plus kilka własnych wynalazków.
             </p>
           </div>
 
@@ -202,9 +199,9 @@ export default async function HomePage() {
           <div className="flex items-end justify-between mb-10 gap-4">
             <div>
               <h2 id="categories-heading" className="font-display text-4xl lg:text-5xl font-extrabold text-gray-900 mb-2 tracking-tight">
-                Wybierz swój klimat
+                Znajdź coś na dziś
               </h2>
-              <p className="text-gray-500 text-base">Przefiltrowane według nastroju i pory dnia</p>
+              <p className="text-gray-500 text-base">Filtruj według kategorii i wybierz na co masz ochotę.</p>
             </div>
             <Link href="/kategorie" className="shrink-0 inline-flex items-center gap-1.5 text-basil font-semibold hover:text-basil-dark transition-colors text-sm">
               Wszystkie kategorie
@@ -242,7 +239,7 @@ export default async function HomePage() {
             <div className="flex items-center gap-3 mb-8">
               <span className="h-px flex-1 bg-stone-200" aria-hidden="true" />
               <h2 id="featured-heading" className="font-display text-sm font-black tracking-widest uppercase text-gray-400">
-                Ostatnio dodane
+                Świeże na blogu
               </h2>
               <span className="h-px flex-1 bg-stone-200" aria-hidden="true" />
             </div>
@@ -381,14 +378,14 @@ export default async function HomePage() {
             <span className="text-basil">tego, czego szukasz?</span>
           </h2>
           <p className="text-gray-500 text-lg leading-relaxed mb-8">
-            Opisz, na co masz ochotę — AI przeszuka dziesiątki tysięcy przepisów z całego świata i dobierze idealny dla Ciebie.
+            Opisz co masz ochotę ugotować. AI przeszuka tysiące przepisów z całego świata i dobierze idealne dla Ciebie.
           </p>
           <Link
             href="/przepis-z-ai"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-white font-bold text-base bg-basil shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-basil"
           >
             <SparkleIcon size={18} />
-            Wypróbuj Wyszukiwanie AI
+            Wypróbuj wyszukiwanie AI
           </Link>
           <p className="text-gray-400 text-sm mt-3">Bez rejestracji · Bezpłatne</p>
         </div>
