@@ -20,7 +20,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm leading-relaxed text-white/45">
-              Starannie dobrane przepisy na każdą okazję. Od szybkich kolacji w tygodniu po imponujące desery.
+              Blog zbiera przepisy dla każdej okazji. Możliwe że znajdziesz tu swój nowy ulubiony.
             </p>
           </div>
 
