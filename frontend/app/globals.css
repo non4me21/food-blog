@@ -11,6 +11,10 @@
   --color-cream-warm: #f0e6d2;
 }
 
+html {
+  background: var(--color-cream);
+}
+
 body {
   background: var(--color-basil);
   color: #1a1a1a;
