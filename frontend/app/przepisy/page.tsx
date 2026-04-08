@@ -3,6 +3,7 @@ import { db } from "@/db"
 import { recipes, categories } from "@/db/schema"
 import { eq, desc } from "drizzle-orm"
 import RecipeCard from "@/app/components/RecipeCard"
+import { pluralPrzepisLabel } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Wszystkie przepisy",
@@ -60,17 +61,10 @@ export default async function RecipesPage() {
             Wszystkie przepisy
           </h1>
           <p className="text-white/80 text-lg max-w-2xl">
-            Nasza pełna kolekcja przepisów — od śniadań po kolacje.
+            Wszystko co wylądowało na blogu. Od śniadań po desery.
           </p>
           <p className="mt-4 text-white/50 text-sm font-medium">
-            {allRecipes.length}{" "}
-            {allRecipes.length === 1
-              ? "przepis"
-              : allRecipes.length % 10 >= 2 &&
-                allRecipes.length % 10 <= 4 &&
-                (allRecipes.length % 100 < 10 || allRecipes.length % 100 >= 20)
-              ? "przepisy"
-              : "przepisów"}
+            {allRecipes.length} {pluralPrzepisLabel(allRecipes.length)}
           </p>
         </div>
 

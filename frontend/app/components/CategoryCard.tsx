@@ -57,7 +57,7 @@ export default function CategoryCard({
       )}
 
       {/* Recipe count badge */}
-      <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full">
+      <span className="absolute top-3 right-3 bg-white/20 border border-white/50 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">
         {pluralPrzepis(n)}
       </span>
 
@@ -68,7 +68,7 @@ export default function CategoryCard({
           style={{
             backgroundImage: getBlobSvg(index),
             backgroundSize: "100% 100%",
-            filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.22)) drop-shadow(0 2px 5px rgba(0,0,0,0.14))",
+            filter: "drop-shadow(0 4px 14px rgba(0,0,0,0.20))",
           }}
         >
           <Heading className="font-display text-xl font-bold text-gray-900 leading-tight mb-1">

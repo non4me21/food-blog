@@ -9,91 +9,114 @@ const NAV_LINKS = [
   { href: "/kategorie", label: "Kategorie", icon: GridIcon },
 ]
 
+// Wavy bottom mask — nav content occupies top ~60/80 of the viewBox,
+// bottom area is the wavy edge. preserveAspectRatio='none' lets it
+// stretch to any width without distorting the vertical wave amplitude.
+const NAV_MASK = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'%3E%3Cpath fill='black' d='M0,0 L1440,0 L1440,58 C1260,82 1080,50 900,70 C720,86 540,54 360,74 C180,84 90,60 0,72 Z'/%3E%3C/svg%3E")`
+
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur-sm border-b border-gold/15">
-      <nav
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
-        aria-label="Main navigation"
+    <header className="sticky top-0 z-50">
+      {/* Main nav — translucent cream + backdrop blur + wavy bottom mask */}
+      <div
+        className="bg-cream/60 backdrop-blur-md pb-4"
+        style={{
+          maskImage: NAV_MASK,
+          WebkitMaskImage: NAV_MASK,
+          maskSize: "100% 100%",
+          WebkitMaskSize: "100% 100%",
+          maskRepeat: "no-repeat",
+          WebkitMaskRepeat: "no-repeat",
+        }}
       >
-        {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil rounded"
-          aria-label="FlavourFind — home"
+        <nav
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+          aria-label="Main navigation"
         >
-          <span
-            className="w-8 h-8 flex items-center justify-center text-white text-sm font-black select-none bg-coral"
-            style={{ borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%" }}
-            aria-hidden="true"
-          >
-            F
-          </span>
-          <span className="font-display font-bold text-lg tracking-tight text-gray-900">
-            FlavourFind
-          </span>
-        </Link>
-
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={pathname.startsWith(href) ? "page" : undefined}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-basil/8 transition-colors aria-[current=page]:text-basil-dark aria-[current=page]:bg-basil/10"
-            >
-              <Icon />
-              {label}
-            </Link>
-          ))}
+          {/* Logo */}
           <Link
-            href="/przepis-z-ai"
-            aria-current={pathname === "/przepis-z-ai" ? "page" : undefined}
-            className="ml-3 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-white bg-coral transition-all hover:brightness-110 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-coral"
+            href="/"
+            className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil rounded"
+            aria-label="FlavourFind — home"
           >
-            <SparkleIcon aria-hidden="true" />
-            Szukaj AI
+            <span
+              className="w-8 h-8 flex items-center justify-center text-white text-sm font-black select-none bg-coral"
+              style={{ borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%" }}
+              aria-hidden="true"
+            >
+              F
+            </span>
+            <span className="font-display font-bold text-lg tracking-tight text-gray-900">
+              FlavourFind
+            </span>
           </Link>
-        </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-basil/8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
-          onClick={() => setOpen(!open)}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Zamknij menu nawigacyjne" : "Otwórz menu nawigacyjne"}
-        >
-          {open ? <XIcon /> : <HamburgerIcon />}
-        </button>
-      </nav>
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-1">
+            {NAV_LINKS.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={pathname.startsWith(href) ? "page" : undefined}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-basil/8 transition-colors aria-[current=page]:text-basil-dark aria-[current=page]:bg-basil/10"
+              >
+                <Icon />
+                {label}
+              </Link>
+            ))}
+            <Link
+              href="/przepis-z-ai"
+              aria-current={pathname === "/przepis-z-ai" ? "page" : undefined}
+              className="ml-3 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold text-white bg-coral transition-all hover:brightness-110 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-coral"
+            >
+              <SparkleIcon aria-hidden="true" />
+              Szukaj AI
+            </Link>
+          </div>
 
-      {/* Mobile menu */}
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-basil/8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil"
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Zamknij menu nawigacyjne" : "Otwórz menu nawigacyjne"}
+          >
+            {open ? <XIcon /> : <HamburgerIcon />}
+          </button>
+        </nav>
+      </div>
+
+      {/* Mobile menu — floats over content, tucks under the wavy nav edge */}
       {open && (
-        <div id="mobile-menu" className="md:hidden border-t border-gold/15 bg-cream">
-          <ul className="px-4 py-3 flex flex-col gap-1" role="list">
-            {NAV_LINKS.map(({ href, label }) => (
+        <div
+          id="mobile-menu"
+          className="md:hidden absolute top-20 left-3 right-3 bg-cream/60 backdrop-blur-md rounded-2xl border border-white/40 shadow-xl"
+        >
+          <ul className="p-2 flex flex-col gap-1" role="list">
+            {NAV_LINKS.map(({ href, label, icon: Icon }) => (
               <li key={href}>
                 <Link
                   href={href}
                   aria-current={pathname.startsWith(href) ? "page" : undefined}
-                  className="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-basil/8 aria-[current=page]:text-basil-dark aria-[current=page]:bg-basil/10"
+                  className="flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-basil/10 hover:text-gray-900 transition-colors aria-[current=page]:text-basil-dark aria-[current=page]:bg-basil/10"
                   onClick={() => setOpen(false)}
                 >
+                  <Icon />
                   {label}
                 </Link>
               </li>
             ))}
-            <li>
+            <li className="mt-1 pt-2 border-t border-gold/15">
               <Link
                 href="/przepis-z-ai"
-                className="block mt-1 px-3 py-2 rounded-lg text-sm font-semibold text-white text-center bg-coral"
+                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-white bg-coral shadow-sm hover:brightness-110 transition-all"
                 onClick={() => setOpen(false)}
               >
+                <SparkleIcon aria-hidden="true" />
                 Szukaj AI
               </Link>
             </li>

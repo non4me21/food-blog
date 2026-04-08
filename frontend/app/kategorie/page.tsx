@@ -69,8 +69,7 @@ export default async function CategoriesPage() {
             Kategorie
           </h1>
           <p className="text-white/80 text-lg max-w-2xl">
-            Odkryj nasze starannie dobrane kolekcje przepisów i znajdź swoją
-            następną kulinarną przygodę.
+            Wszystko poukładane, żebyś szybko trafił na to czego szukasz.
           </p>
           <p className="mt-4 text-white/50 text-sm font-medium">
             {allCategories.length} {pluralKategoriaLabel(allCategories.length)}

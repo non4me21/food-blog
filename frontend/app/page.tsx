@@ -5,6 +5,7 @@ import { categories, recipes } from "@/db/schema"
 import { eq, count, and, desc, isNotNull } from "drizzle-orm"
 import CategoryCard from "@/app/components/CategoryCard"
 import StatsCard from "@/app/components/StatsCard"
+import HeroHeading from "@/app/components/HeroHeading"
 
 async function getCategoriesWithCount() {
   return db
@@ -93,12 +94,7 @@ export default async function HomePage() {
               <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse" aria-hidden="true" />
               JEDZENIE. I W SUMIE TYLE.
             </span>
-            <h1
-              id="hero-heading"
-              className="font-display text-5xl lg:text-6xl font-extrabold leading-[1.05] mb-6 tracking-tight"
-            >
-              Hej, tu Kacper. Tu lądują rzeczy, które warto ugotować.
-            </h1>
+            <HeroHeading />
             <p className="text-white/75 text-base lg:text-lg leading-relaxed max-w-sm">
               Przepisy, które wpadły do mojego życia i zostały. Plus kilka własnych wynalazków.
             </p>
@@ -161,14 +157,14 @@ export default async function HomePage() {
           <div className="order-2 lg:order-3 flex flex-col items-start lg:items-stretch gap-3">
             <Link
               href="/przepisy"
-              className="inline-flex items-center justify-between gap-3 px-6 py-3.5 rounded-full bg-white text-basil-dark font-semibold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-basil"
+              className="inline-flex items-center justify-between gap-3 px-6 py-3.5 rounded-full bg-white/20 border border-white/50 text-white font-semibold backdrop-blur-sm transition-all duration-200 hover:bg-white/30 hover:shadow-lg hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-basil"
             >
               Przeglądaj przepisy
               <ArrowRightIcon />
             </Link>
             <Link
               href="/przepis-z-ai"
-              className="inline-flex items-center justify-between gap-3 px-6 py-3.5 rounded-full bg-basil-dark/50 border border-white/20 text-white font-semibold backdrop-blur-sm transition-all duration-200 hover:bg-basil-dark/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-basil"
+              className="inline-flex items-center justify-between gap-3 px-6 py-3.5 rounded-full bg-white/10 border border-white/30 text-white font-semibold backdrop-blur-sm transition-all duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-basil"
             >
               Wyszukaj z AI
               <SparkleIcon size={18} />
@@ -233,7 +229,7 @@ export default async function HomePage() {
 
       {/* ── Polecane — editorial bento ── */}
       {latestRecipes.length > 0 && (
-        <section className="py-4 pb-20" aria-labelledby="featured-heading">
+        <section className="py-4" aria-labelledby="featured-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div className="flex items-center gap-3 mb-8">
@@ -267,10 +263,11 @@ export default async function HomePage() {
                   </div>
                   <div className="absolute inset-y-0 left-2 flex items-center">
                     <div
-                      className="px-12 py-14 drop-shadow-lg"
+                      className="px-12 py-14"
                       style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M25,30 C50,5 95,18 135,8 C165,-2 195,25 192,60 C189,90 175,105 185,135 C195,165 170,192 130,192 C95,192 80,175 50,182 C20,189 -5,165 2,130 C8,100 -5,80 5,55 C12,38 18,35 25,30Z'/%3E%3C/svg%3E")`,
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23ffffff' fill-opacity='0.70' stroke='%23ffffff' stroke-opacity='0.6' stroke-width='4' d='M25,30 C50,5 95,18 135,8 C165,-2 195,25 192,60 C189,90 175,105 185,135 C195,165 170,192 130,192 C95,192 80,175 50,182 C20,189 -5,165 2,130 C8,100 -5,80 5,55 C12,38 18,35 25,30Z'/%3E%3C/svg%3E")`,
                         backgroundSize: "100% 100%",
+                        filter: "drop-shadow(0 4px 14px rgba(0,0,0,0.20))",
                       }}
                     >
                       {featured.categoryName && (
@@ -382,7 +379,7 @@ export default async function HomePage() {
           </p>
           <Link
             href="/przepis-z-ai"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-white font-bold text-base bg-basil shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-basil"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-basil font-bold text-base bg-white/70 border border-basil/25 backdrop-blur-sm shadow-md hover:bg-white/90 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-basil"
           >
             <SparkleIcon size={18} />
             Wypróbuj wyszukiwanie AI

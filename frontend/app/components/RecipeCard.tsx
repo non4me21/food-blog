@@ -54,7 +54,7 @@ export default function RecipeCard({
 
       {/* Difficulty badge */}
       {difficulty && (
-        <span className="absolute top-3 right-3 group/diff bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full font-mono tracking-widest cursor-default">
+        <span className="absolute top-3 right-3 group/diff bg-white/20 border border-white/50 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full font-mono tracking-widest cursor-default">
           {DIFFICULTY_DOTS[difficulty] ?? difficulty}
           {/* mobile: label always visible; desktop: hover tooltip */}
           <span className="ml-1 lg:hidden">{DIFFICULTY_LABEL[difficulty] ?? difficulty}</span>
@@ -71,7 +71,7 @@ export default function RecipeCard({
           style={{
             backgroundImage: getBlobSvg(index),
             backgroundSize: "100% 100%",
-            filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.22)) drop-shadow(0 2px 5px rgba(0,0,0,0.14))",
+            filter: "drop-shadow(0 4px 14px rgba(0,0,0,0.20))",
           }}
         >
           {categoryName && categorySlug && (
