@@ -17,7 +17,6 @@ const bricolage = Bricolage_Grotesque({
 
 export const viewport: Viewport = {
   viewportFit: "cover",
-  themeColor: "#faf7f2",
 }
 
 export const metadata: Metadata = {
