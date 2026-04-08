@@ -5,6 +5,7 @@ import { categories, recipes } from "@/db/schema"
 import { eq, count, and, desc, isNotNull } from "drizzle-orm"
 import CategoryCard from "@/app/components/CategoryCard"
 import StatsCard from "@/app/components/StatsCard"
+import HeroHeading from "@/app/components/HeroHeading"
 
 async function getCategoriesWithCount() {
   return db
@@ -93,14 +94,7 @@ export default async function HomePage() {
               <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse" aria-hidden="true" />
               JEDZENIE. I W SUMIE TYLE.
             </span>
-            <h1
-              id="hero-heading"
-              className="font-display text-5xl lg:text-6xl font-extrabold leading-[1.05] mb-6 tracking-tight"
-            >
-              Hej, tu{" "}
-              <em className="not-italic text-gold brightness-125">Kacper</em>
-              . Tu lądują rzeczy, które warto ugotować.
-            </h1>
+            <HeroHeading />
             <p className="text-white/75 text-base lg:text-lg leading-relaxed max-w-sm">
               Przepisy, które wpadły do mojego życia i zostały. Plus kilka własnych wynalazków.
             </p>
@@ -235,7 +229,7 @@ export default async function HomePage() {
 
       {/* ── Polecane — editorial bento ── */}
       {latestRecipes.length > 0 && (
-        <section className="py-4 pb-20" aria-labelledby="featured-heading">
+        <section className="py-4" aria-labelledby="featured-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div className="flex items-center gap-3 mb-8">
