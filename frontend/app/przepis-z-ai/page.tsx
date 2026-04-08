@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { pluralPrzepisLabel } from "@/lib/utils"
 
 const DIFFICULTY_DOTS: Record<string, string> = {
   easy: "●○○", medium: "●●○", hard: "●●●",
@@ -140,7 +141,7 @@ export default function PrzepisZAiPage() {
               <p className="text-gray-400 text-sm mb-10 text-center">
                 Znaleziono{" "}
                 <span className="font-semibold text-basil">{results.length}</span>{" "}
-                {results.length === 1 ? "przepis" : results.length < 5 ? "przepisy" : "przepisów"}
+                {pluralPrzepisLabel(results.length)}
               </p>
               <div className="flex flex-col gap-8">
                 {results.map((recipe, i) => (

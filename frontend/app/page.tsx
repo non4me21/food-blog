@@ -97,7 +97,9 @@ export default async function HomePage() {
               id="hero-heading"
               className="font-display text-5xl lg:text-6xl font-extrabold leading-[1.05] mb-6 tracking-tight"
             >
-              Hej, tu Kacper. Tu lądują rzeczy, które warto ugotować.
+              Hej, tu{" "}
+              <em className="not-italic text-gold brightness-125">Kacper</em>
+              . Tu lądują rzeczy, które warto ugotować.
             </h1>
             <p className="text-white/75 text-base lg:text-lg leading-relaxed max-w-sm">
               Przepisy, które wpadły do mojego życia i zostały. Plus kilka własnych wynalazków.

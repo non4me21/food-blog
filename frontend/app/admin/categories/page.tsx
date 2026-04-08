@@ -4,6 +4,7 @@ import { eq, count } from "drizzle-orm"
 import { deleteCategoryAction, createCategoryAction } from "@/app/admin/actions"
 import DeleteButton from "@/app/admin/components/DeleteButton"
 import AddCategoryForm from "./AddCategoryForm"
+import { pluralPrzepisLabel } from "@/lib/utils"
 
 export const metadata = { title: "Kategorie – Admin" }
 
@@ -51,7 +52,7 @@ export default async function CategoriesPage() {
                 </div>
                 <div className="flex items-center gap-4 shrink-0">
                   <span className="text-xs text-gray-400 font-mono" title="Kolejność wyświetlania">#{cat.display_order}</span>
-                  <span className="text-xs text-gray-400">{Number(cat.recipeCount)} przepisów</span>
+                  <span className="text-xs text-gray-400">{Number(cat.recipeCount)} {pluralPrzepisLabel(Number(cat.recipeCount))}</span>
                   <a
                     href={`/admin/categories/${cat.id}/edit`}
                     className="text-xs font-semibold text-green-700 hover:text-green-900 transition-colors"

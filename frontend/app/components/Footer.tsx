@@ -63,7 +63,15 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-6 text-xs text-white/20 text-center">
-          © {new Date().getFullYear()} FlavourFind. Wszelkie prawa zastrzeżone.
+          Created by{" "}
+          <a
+            href="https://github.com/non4me21"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/60 transition-colors"
+          >
+            @non4me21
+          </a>
         </div>
       </div>
     </footer>
