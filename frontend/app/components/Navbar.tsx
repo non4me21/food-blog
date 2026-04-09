@@ -24,6 +24,7 @@ export default function Navbar() {
       <div
         className="bg-cream/60 backdrop-blur-md pb-4"
         style={{
+          paddingTop: "env(safe-area-inset-top)",
           maskImage: NAV_MASK,
           WebkitMaskImage: NAV_MASK,
           maskSize: "100% 100%",

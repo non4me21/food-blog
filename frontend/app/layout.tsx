@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Plus_Jakarta_Sans, Bricolage_Grotesque } from "next/font/google"
 import "./globals.css"
 import Navbar from "./components/Navbar"
@@ -14,6 +14,10 @@ const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
   subsets: ["latin", "latin-ext"],
 })
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+}
 
 export const metadata: Metadata = {
   title: {

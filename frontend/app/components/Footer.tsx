@@ -3,7 +3,10 @@ import Link from "next/link"
 export default function Footer() {
   return (
     <footer className="mt-auto bg-basil-dark" aria-label="Stopka strony">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+        style={{ paddingBottom: "calc(3rem + env(safe-area-inset-bottom))" }}
+      >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
           {/* Marka */}
           <div>
