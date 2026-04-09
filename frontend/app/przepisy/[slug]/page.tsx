@@ -114,7 +114,7 @@ export default async function RecipePage({ params }: Props) {
         </div>
       </div>
 
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* ── Ścieżka nawigacji ── */}
         <nav aria-label="Ścieżka nawigacji" className="mb-6">
           <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-400" role="list">
