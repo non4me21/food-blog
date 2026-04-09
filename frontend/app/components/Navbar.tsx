@@ -19,7 +19,7 @@ export default function Navbar() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-50">
+    <header className="fixed top-0 left-0 right-0 z-50">
       {/* Main nav — translucent cream + backdrop blur + wavy bottom mask */}
       <div
         className="bg-cream/60 backdrop-blur-md pb-4"
