@@ -75,7 +75,7 @@ export default function CategoryCard({
             {name}
           </Heading>
           {description && (
-            <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 max-w-[160px]">
+            <p className="text-gray-500 text-xs leading-relaxed max-w-[160px]">
               {description}
             </p>
           )}
