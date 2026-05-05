@@ -7,6 +7,8 @@ import { eq, and, desc, lte } from "drizzle-orm"
 import RecipeCard from "@/app/components/RecipeCard"
 import { pluralPrzepis } from "@/lib/utils"
 
+export const revalidate = 60
+
 type Props = { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {

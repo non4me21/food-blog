@@ -5,6 +5,8 @@ import { eq, desc, and, lte } from "drizzle-orm"
 import RecipeCard from "@/app/components/RecipeCard"
 import { pluralPrzepisLabel } from "@/lib/utils"
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: "Wszystkie przepisy",
   description: "Przeglądaj wszystkie przepisy na kacperje.",

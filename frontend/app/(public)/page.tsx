@@ -7,6 +7,8 @@ import CategoryCard from "@/app/components/CategoryCard"
 import StatsCard from "@/app/components/StatsCard"
 import HeroHeading from "@/app/components/HeroHeading"
 
+export const revalidate = 60
+
 async function getCategoriesWithCount() {
   return db
     .select({
