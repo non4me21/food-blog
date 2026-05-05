@@ -7,7 +7,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kacperje.com"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [publishedRecipes, allCategories] = await Promise.all([
-    db.select({ slug: recipes.slug }).from(recipes).where(eq(recipes.published, true)),
+    db
+      .select({ slug: recipes.slug, published_at: recipes.published_at, created_at: recipes.created_at })
+      .from(recipes)
+      .where(eq(recipes.published, true)),
     db.select({ slug: categories.slug }).from(categories),
   ])
 
@@ -20,7 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const recipeRoutes: MetadataRoute.Sitemap = publishedRecipes.map((r) => ({
     url:             `${BASE_URL}/przepisy/${r.slug}`,
-    lastModified:    new Date(),
+    lastModified:    r.published_at ?? r.created_at ?? new Date(),
     changeFrequency: "monthly" as const,
     priority:        0.8,
   }))
