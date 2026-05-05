@@ -14,6 +14,7 @@ type DefaultValues = {
   difficulty?: string | null
   image_url?: string | null
   published?: boolean
+  published_at?: string | null
   ingredients?: string[]
   directions?: string[]
 }
@@ -322,7 +323,7 @@ export default function RecipeForm({
         <h2 id="publish-heading" className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">
           Publikacja
         </h2>
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 space-y-5">
           <label className="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"
@@ -334,6 +335,22 @@ export default function RecipeForm({
               Opublikuj przepis (widoczny na stronie)
             </span>
           </label>
+
+          <div>
+            <label htmlFor="published_at" className="block text-sm font-semibold text-gray-700 mb-1.5">
+              Data publikacji
+            </label>
+            <input
+              id="published_at"
+              name="published_at"
+              type="datetime-local"
+              defaultValue={defaultValues.published_at ?? ""}
+              className="px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent text-gray-900 text-sm"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Czas UTC. Zostaw puste, żeby ustawić na teraz. Ustaw datę w przyszłości, aby zaplanować publikację.
+            </p>
+          </div>
         </div>
       </section>
 

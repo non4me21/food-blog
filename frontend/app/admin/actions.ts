@@ -81,6 +81,10 @@ export async function createRecipeAction(
 
   const categoryIdStr = formData.get("category_id") as string
   const published = formData.get("published") === "on"
+  const publishedAtStr = (formData.get("published_at") as string) || null
+  const publishedAt = published
+    ? (publishedAtStr ? new Date(publishedAtStr) : new Date())
+    : null
 
   let ingredients: string[] = []
   let directions: string[] = []
@@ -103,7 +107,7 @@ export async function createRecipeAction(
       category_id: categoryIdStr ? parseInt(categoryIdStr) : null,
       image_url: (formData.get("image_url") as string) || null,
       published,
-      published_at: published ? new Date() : null,
+      published_at: publishedAt,
     })
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e)
@@ -135,6 +139,7 @@ export async function updateRecipeAction(
   const categoryIdStr = formData.get("category_id") as string
   const newCategoryId = categoryIdStr ? parseInt(categoryIdStr) : null
   const published = formData.get("published") === "on"
+  const publishedAtStr = (formData.get("published_at") as string) || null
 
   let ingredients: string[] = []
   let directions: string[] = []
@@ -150,9 +155,8 @@ export async function updateRecipeAction(
     .from(recipes)
     .where(eq(recipes.id, id))
   const oldCategoryId = oldRecipe?.category_id ?? null
-  const wasPublished = oldRecipe?.published ?? false
   const publishedAt = published
-    ? (wasPublished ? oldRecipe?.published_at ?? new Date() : new Date())
+    ? (publishedAtStr ? new Date(publishedAtStr) : oldRecipe?.published_at ?? new Date())
     : null
 
   try {

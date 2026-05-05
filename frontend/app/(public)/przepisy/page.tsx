@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { db } from "@/db"
 import { recipes, categories } from "@/db/schema"
-import { eq, desc } from "drizzle-orm"
+import { eq, desc, and, lte } from "drizzle-orm"
 import RecipeCard from "@/app/components/RecipeCard"
 import { pluralPrzepisLabel } from "@/lib/utils"
 
@@ -23,7 +23,7 @@ async function getAllRecipes() {
     })
     .from(recipes)
     .leftJoin(categories, eq(recipes.category_id, categories.id))
-    .where(eq(recipes.published, true))
+    .where(and(eq(recipes.published, true), lte(recipes.published_at, new Date())))
     .orderBy(desc(recipes.published_at))
 }
 

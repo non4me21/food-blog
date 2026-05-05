@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
-import { eq, and } from "drizzle-orm"
+import { eq, and, lte } from "drizzle-orm"
 import ShareButton from "@/app/components/ShareButton"
 
 type Props = { params: Promise<{ slug: string }> }
@@ -14,7 +14,7 @@ async function getRecipe(slug: string) {
     .select({ recipe: recipes, category: categories })
     .from(recipes)
     .leftJoin(categories, eq(recipes.category_id, categories.id))
-    .where(and(eq(recipes.slug, slug), eq(recipes.published, true)))
+    .where(and(eq(recipes.slug, slug), eq(recipes.published, true), lte(recipes.published_at, new Date())))
     .limit(1)
   return rows[0] ?? null
 }
@@ -23,7 +23,7 @@ export async function generateStaticParams() {
   const allRecipes = await db
     .select({ slug: recipes.slug })
     .from(recipes)
-    .where(eq(recipes.published, true))
+    .where(and(eq(recipes.published, true), lte(recipes.published_at, new Date())))
   return allRecipes.map((r) => ({ slug: r.slug }))
 }
 

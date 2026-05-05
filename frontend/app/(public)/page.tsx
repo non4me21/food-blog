@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
-import { eq, count, and, desc, isNotNull } from "drizzle-orm"
+import { eq, count, and, desc, isNotNull, lte } from "drizzle-orm"
 import CategoryCard from "@/app/components/CategoryCard"
 import StatsCard from "@/app/components/StatsCard"
 import HeroHeading from "@/app/components/HeroHeading"
@@ -20,7 +20,7 @@ async function getCategoriesWithCount() {
     .from(categories)
     .leftJoin(
       recipes,
-      and(eq(recipes.category_id, categories.id), eq(recipes.published, true))
+      and(eq(recipes.category_id, categories.id), published())
     )
     .groupBy(
       categories.id,
@@ -33,11 +33,13 @@ async function getCategoriesWithCount() {
     .orderBy(categories.display_order, categories.name)
 }
 
+const published = () => and(eq(recipes.published, true), lte(recipes.published_at, new Date()))
+
 async function getHeroImages() {
   const rows = await db
     .select({ image_url: recipes.image_url })
     .from(recipes)
-    .where(and(eq(recipes.published, true), isNotNull(recipes.image_url)))
+    .where(and(published(), isNotNull(recipes.image_url)))
     .orderBy(desc(recipes.published_at))
     .limit(3)
   return rows.map((r) => r.image_url as string)
@@ -56,14 +58,14 @@ async function getLatestRecipes() {
     })
     .from(recipes)
     .leftJoin(categories, eq(recipes.category_id, categories.id))
-    .where(eq(recipes.published, true))
+    .where(published())
     .orderBy(desc(recipes.published_at))
     .limit(2)
 }
 
 async function getStats() {
   const [recipeResult, categoryResult] = await Promise.all([
-    db.select({ value: count() }).from(recipes).where(eq(recipes.published, true)),
+    db.select({ value: count() }).from(recipes).where(published()),
     db.select({ value: count() }).from(categories),
   ])
   return {

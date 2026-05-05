@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 import { db } from "@/db"
 import { recipes, categories } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { and, eq, lte } from "drizzle-orm"
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kacperje.com"
 
@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     db
       .select({ slug: recipes.slug, published_at: recipes.published_at, created_at: recipes.created_at })
       .from(recipes)
-      .where(eq(recipes.published, true)),
+      .where(and(eq(recipes.published, true), lte(recipes.published_at, new Date()))),
     db.select({ slug: categories.slug, updated_at: categories.updated_at }).from(categories),
   ])
 

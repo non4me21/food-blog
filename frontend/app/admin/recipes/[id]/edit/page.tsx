@@ -50,6 +50,7 @@ export default async function EditRecipePage({ params }: Props) {
           difficulty: recipe.difficulty,
           image_url: recipe.image_url,
           published: recipe.published ?? false,
+          published_at: recipe.published_at?.toISOString().slice(0, 16) ?? null,
           ingredients: (recipe.ingredients as string[]) ?? [],
           directions: (recipe.directions as string[]) ?? [],
         }}
