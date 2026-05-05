@@ -23,12 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Przepisy: ${category.name}`,
     description:
       category.description ??
-      `Przeglądaj wszystkie przepisy z kategorii ${category.name} na FlavourFind.`,
+      `Przeglądaj wszystkie przepisy z kategorii ${category.name} na kacperje.`,
     openGraph: {
-      title: `${category.name} | FlavourFind`,
+      title: `${category.name} | kacperje`,
       description:
         category.description ??
-        `Przeglądaj wszystkie przepisy z kategorii ${category.name} na FlavourFind.`,
+        `Przeglądaj wszystkie przepisy z kategorii ${category.name} na kacperje.`,
       ...(category.image_url ? { images: [category.image_url] } : {}),
     },
   }

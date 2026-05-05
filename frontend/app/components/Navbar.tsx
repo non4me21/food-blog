@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
@@ -41,17 +42,18 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil rounded"
-            aria-label="FlavourFind — home"
+            aria-label="kacperje — home"
           >
-            <span
-              className="w-8 h-8 flex items-center justify-center text-white text-sm font-black select-none bg-coral"
-              style={{ borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%" }}
-              aria-hidden="true"
-            >
-              F
-            </span>
+            <Image
+              src="/logo.svg"
+              alt=""
+              width={32}
+              height={32}
+              priority
+              className="w-8 h-8 select-none"
+            />
             <span className="font-display font-bold text-lg tracking-tight text-gray-900">
-              FlavourFind
+              kacperje
             </span>
           </Link>
 

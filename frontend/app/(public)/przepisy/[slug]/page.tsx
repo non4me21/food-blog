@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: recipe.title,
     description: recipe.description ?? undefined,
     openGraph: {
-      title: `${recipe.title} | FlavourFind`,
+      title: `${recipe.title} | kacperje`,
       description: recipe.description ?? undefined,
       type: "article",
       publishedTime: recipe.published_at?.toISOString(),

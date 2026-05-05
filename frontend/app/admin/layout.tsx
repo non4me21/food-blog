@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { logoutAction } from "./actions"
 
@@ -16,13 +17,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-6">
             <Link href="/admin" className="flex items-center gap-2 font-bold text-gray-900 shrink-0">
-              <span
-                className="w-7 h-7 rounded-md flex items-center justify-center text-white text-xs font-black"
-                style={{ backgroundColor: "#e8531a" }}
-                aria-hidden="true"
-              >
-                F
-              </span>
+              <Image
+                src="/logo.svg"
+                alt=""
+                width={28}
+                height={28}
+                className="w-7 h-7 select-none"
+              />
               <span className="hidden sm:inline">Admin</span>
             </Link>
 

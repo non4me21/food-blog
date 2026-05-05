@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Plus_Jakarta_Sans, Bricolage_Grotesque } from "next/font/google"
 import "./globals.css"
-import Navbar from "./components/Navbar"
-import Footer from "./components/Footer"
-import ScrollProgress from "./components/ScrollProgress"
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -21,13 +18,13 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "FlavourFind – Odkryj Wyjątkowe Przepisy",
-    template: "%s | FlavourFind",
+    default: "kacperje – sprawdź moje przepisy, bo warto",
+    template: "%s | kacperje",
   },
   description:
-    "Kulinarny blog z wyjątkowymi przepisami. Od szybkich kolacji w tygodniu po imponujące desery – Twoja kulinarna podróż zaczyna się tutaj.",
+    "Blog z przepisami, które weszły do mojego życia na stałe.",
   openGraph: {
-    siteName: "FlavourFind",
+    siteName: "kacperje",
     type: "website",
     locale: "pl_PL",
   },
@@ -45,12 +42,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <ScrollProgress />
-        <Navbar />
-        <main id="main-content" className="flex-1 bg-cream pt-14">
-          {children}
-        </main>
-        <Footer />
+        {children}
       </body>
     </html>
   )
