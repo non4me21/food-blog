@@ -14,11 +14,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     db.select({ slug: categories.slug }).from(categories),
   ])
 
+  const latestRecipeDate = publishedRecipes.reduce<Date | null>((max, r) => {
+    const date = r.published_at ?? r.created_at
+    if (!date) return max
+    return max === null || date > max ? date : max
+  }, null) ?? new Date()
+
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: BASE_URL,                         lastModified: new Date(), changeFrequency: "daily",   priority: 1.0 },
-    { url: `${BASE_URL}/przepisy`,           lastModified: new Date(), changeFrequency: "daily",   priority: 0.9 },
-    { url: `${BASE_URL}/kategorie`,          lastModified: new Date(), changeFrequency: "weekly",  priority: 0.8 },
-    { url: `${BASE_URL}/przepis-z-ai`,       lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: BASE_URL,                   lastModified: latestRecipeDate, changeFrequency: "daily",   priority: 1.0 },
+    { url: `${BASE_URL}/przepisy`,     lastModified: latestRecipeDate, changeFrequency: "daily",   priority: 0.9 },
+    { url: `${BASE_URL}/kategorie`,    lastModified: new Date(),       changeFrequency: "weekly",  priority: 0.8 },
+    { url: `${BASE_URL}/przepis-z-ai`, lastModified: new Date(),       changeFrequency: "monthly", priority: 0.6 },
   ]
 
   const recipeRoutes: MetadataRoute.Sitemap = publishedRecipes.map((r) => ({
