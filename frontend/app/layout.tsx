@@ -28,6 +28,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pl_PL",
   },
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        { url: "/rss.xml", title: "kacperje – przepisy (RSS)" },
+      ],
+    },
+  },
 }
 
 export default function RootLayout({

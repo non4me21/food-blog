@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
-import { eq, and, desc } from "drizzle-orm"
+import { eq, and, desc, lte } from "drizzle-orm"
 import RecipeCard from "@/app/components/RecipeCard"
 import { pluralPrzepis } from "@/lib/utils"
 
@@ -47,7 +47,7 @@ async function getRecipesByCategory(categoryId: number) {
   return db
     .select()
     .from(recipes)
-    .where(and(eq(recipes.category_id, categoryId), eq(recipes.published, true)))
+    .where(and(eq(recipes.category_id, categoryId), eq(recipes.published, true), lte(recipes.published_at, new Date())))
     .orderBy(desc(recipes.published_at))
 }
 

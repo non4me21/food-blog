@@ -7,6 +7,7 @@ export const categories = pgTable("categories", {
   description:   text("description"),
   image_url:     text("image_url"),
   display_order: integer("display_order").notNull().default(0),
+  updated_at:    timestamp("updated_at", { withTimezone: true }).defaultNow(),
 })
 
 export const recipes = pgTable("recipes", {

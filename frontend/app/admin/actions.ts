@@ -81,6 +81,10 @@ export async function createRecipeAction(
 
   const categoryIdStr = formData.get("category_id") as string
   const published = formData.get("published") === "on"
+  const publishedAtStr = (formData.get("published_at") as string) || null
+  const publishedAt = published
+    ? (publishedAtStr ? new Date(publishedAtStr) : new Date())
+    : null
 
   let ingredients: string[] = []
   let directions: string[] = []
@@ -103,7 +107,7 @@ export async function createRecipeAction(
       category_id: categoryIdStr ? parseInt(categoryIdStr) : null,
       image_url: (formData.get("image_url") as string) || null,
       published,
-      published_at: published ? new Date() : null,
+      published_at: publishedAt,
     })
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e)
@@ -116,6 +120,8 @@ export async function createRecipeAction(
   revalidatePath("/")
   revalidatePath("/przepisy")
   if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
+  revalidatePath("/sitemap.xml")
+  revalidatePath("/rss.xml")
   redirect("/admin")
 }
 
@@ -133,6 +139,7 @@ export async function updateRecipeAction(
   const categoryIdStr = formData.get("category_id") as string
   const newCategoryId = categoryIdStr ? parseInt(categoryIdStr) : null
   const published = formData.get("published") === "on"
+  const publishedAtStr = (formData.get("published_at") as string) || null
 
   let ingredients: string[] = []
   let directions: string[] = []
@@ -144,10 +151,13 @@ export async function updateRecipeAction(
   }
 
   const [oldRecipe] = await db
-    .select({ category_id: recipes.category_id })
+    .select({ category_id: recipes.category_id, published: recipes.published, published_at: recipes.published_at })
     .from(recipes)
     .where(eq(recipes.id, id))
   const oldCategoryId = oldRecipe?.category_id ?? null
+  const publishedAt = published
+    ? (publishedAtStr ? new Date(publishedAtStr) : oldRecipe?.published_at ?? new Date())
+    : null
 
   try {
     await db
@@ -163,7 +173,7 @@ export async function updateRecipeAction(
         category_id: newCategoryId,
         image_url: (formData.get("image_url") as string) || null,
         published,
-        published_at: published ? new Date() : null,
+        published_at: publishedAt,
       })
       .where(eq(recipes.id, id))
   } catch (e: unknown) {
@@ -183,6 +193,8 @@ export async function updateRecipeAction(
   if (oldCategorySlug) revalidatePath(`/kategorie/${oldCategorySlug}`)
   if (newCategorySlug && newCategorySlug !== oldCategorySlug)
     revalidatePath(`/kategorie/${newCategorySlug}`)
+  revalidatePath("/sitemap.xml")
+  revalidatePath("/rss.xml")
   redirect("/admin")
 }
 
@@ -199,6 +211,8 @@ export async function deleteRecipeAction(id: number) {
   revalidatePath("/przepisy")
   if (recipe?.slug) revalidatePath(`/przepisy/${recipe.slug}`)
   if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
+  revalidatePath("/sitemap.xml")
+  revalidatePath("/rss.xml")
   redirect("/admin")
 }
 
@@ -218,6 +232,8 @@ export async function togglePublishedAction(id: number, published: boolean) {
   revalidatePath("/przepisy")
   if (recipe?.slug) revalidatePath(`/przepisy/${recipe.slug}`)
   if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
+  revalidatePath("/sitemap.xml")
+  revalidatePath("/rss.xml")
 }
 
 /* ── Categories ── */
@@ -241,6 +257,7 @@ export async function createCategoryAction(
       description: (formData.get("description") as string) || null,
       image_url: (formData.get("image_url") as string) || null,
       display_order: isNaN(displayOrder) ? 0 : displayOrder,
+      updated_at: new Date(),
     })
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e)
@@ -250,6 +267,7 @@ export async function createCategoryAction(
 
   revalidatePath("/")
   revalidatePath("/kategorie")
+  revalidatePath("/sitemap.xml")
   redirect("/admin/categories")
 }
 
@@ -275,6 +293,7 @@ export async function updateCategoryAction(
         description: (formData.get("description") as string) || null,
         image_url: (formData.get("image_url") as string) || null,
         display_order: isNaN(displayOrder) ? 0 : displayOrder,
+        updated_at: new Date(),
       })
       .where(eq(categories.id, id))
   } catch (e: unknown) {
@@ -286,6 +305,7 @@ export async function updateCategoryAction(
   revalidatePath("/")
   revalidatePath("/kategorie")
   revalidatePath(`/kategorie/${slug}`)
+  revalidatePath("/sitemap.xml")
   redirect("/admin/categories")
 }
 
@@ -293,5 +313,6 @@ export async function deleteCategoryAction(id: number) {
   await db.delete(categories).where(eq(categories.id, id))
   revalidatePath("/")
   revalidatePath("/kategorie")
+  revalidatePath("/sitemap.xml")
   redirect("/admin/categories")
 }
