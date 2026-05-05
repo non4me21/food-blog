@@ -1,6 +1,6 @@
 {
-  "id": "0005_add_categories_updated_at",
-  "prevId": "0005_add_categories_updated_at",
+  "id": "b4a89301-2cb1-4c4e-92a5-680e8b4d4d4d",
+  "prevId": "66cef1a6-5986-4a94-a338-eafb2530154e",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
