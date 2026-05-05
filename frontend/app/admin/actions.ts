@@ -249,6 +249,7 @@ export async function createCategoryAction(
       description: (formData.get("description") as string) || null,
       image_url: (formData.get("image_url") as string) || null,
       display_order: isNaN(displayOrder) ? 0 : displayOrder,
+      updated_at: new Date(),
     })
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e)
@@ -284,6 +285,7 @@ export async function updateCategoryAction(
         description: (formData.get("description") as string) || null,
         image_url: (formData.get("image_url") as string) || null,
         display_order: isNaN(displayOrder) ? 0 : displayOrder,
+        updated_at: new Date(),
       })
       .where(eq(categories.id, id))
   } catch (e: unknown) {

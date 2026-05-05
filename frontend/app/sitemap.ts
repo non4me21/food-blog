@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .select({ slug: recipes.slug, published_at: recipes.published_at, created_at: recipes.created_at })
       .from(recipes)
       .where(eq(recipes.published, true)),
-    db.select({ slug: categories.slug }).from(categories),
+    db.select({ slug: categories.slug, updated_at: categories.updated_at }).from(categories),
   ])
 
   const latestRecipeDate = publishedRecipes.reduce<Date | null>((max, r) => {
@@ -36,7 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const categoryRoutes: MetadataRoute.Sitemap = allCategories.map((c) => ({
     url:             `${BASE_URL}/kategorie/${c.slug}`,
-    lastModified:    new Date(),
+    lastModified:    c.updated_at ?? new Date(),
     changeFrequency: "weekly" as const,
     priority:        0.7,
   }))
