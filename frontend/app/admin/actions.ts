@@ -146,10 +146,14 @@ export async function updateRecipeAction(
   }
 
   const [oldRecipe] = await db
-    .select({ category_id: recipes.category_id })
+    .select({ category_id: recipes.category_id, published: recipes.published, published_at: recipes.published_at })
     .from(recipes)
     .where(eq(recipes.id, id))
   const oldCategoryId = oldRecipe?.category_id ?? null
+  const wasPublished = oldRecipe?.published ?? false
+  const publishedAt = published
+    ? (wasPublished ? oldRecipe?.published_at ?? new Date() : new Date())
+    : null
 
   try {
     await db
@@ -165,7 +169,7 @@ export async function updateRecipeAction(
         category_id: newCategoryId,
         image_url: (formData.get("image_url") as string) || null,
         published,
-        published_at: published ? new Date() : null,
+        published_at: publishedAt,
       })
       .where(eq(recipes.id, id))
   } catch (e: unknown) {
