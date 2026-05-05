@@ -21,13 +21,13 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "FlavourFind – Odkryj Wyjątkowe Przepisy",
-    template: "%s | FlavourFind",
+    default: "kacperje – sprawdź moje przepisy, bo warto",
+    template: "%s | kacperje",
   },
   description:
-    "Kulinarny blog z wyjątkowymi przepisami. Od szybkich kolacji w tygodniu po imponujące desery – Twoja kulinarna podróż zaczyna się tutaj.",
+    "Blog z przepisami, które weszły do mojego życia na stałe.",
   openGraph: {
-    siteName: "FlavourFind",
+    siteName: "kacperje",
     type: "website",
     locale: "pl_PL",
   },

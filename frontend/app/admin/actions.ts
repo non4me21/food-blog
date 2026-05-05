@@ -19,7 +19,7 @@ async function getCategorySlug(categoryId: number | null): Promise<string | null
 
 function computeSessionToken(password: string): string {
   return createHash("sha256")
-    .update(password + ":flavourfind-admin-v1")
+    .update(password + ":kacperje-admin-v1")
     .digest("hex")
 }
 

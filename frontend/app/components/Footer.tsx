@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 
 export default function Footer() {
@@ -11,15 +12,15 @@ export default function Footer() {
           {/* Marka */}
           <div>
             <div className="flex items-center gap-2.5 mb-3">
-              <span
-                className="w-8 h-8 flex items-center justify-center text-white text-sm font-black bg-coral"
-                style={{ borderRadius: "60% 40% 50% 50% / 50% 60% 40% 50%" }}
-                aria-hidden="true"
-              >
-                F
-              </span>
+              <Image
+                src="/logo.svg"
+                alt=""
+                width={32}
+                height={32}
+                className="w-8 h-8 select-none"
+              />
               <span className="font-display font-bold text-lg text-white tracking-tight">
-                FlavourFind
+                kacperje
               </span>
             </div>
             <p className="text-sm leading-relaxed text-white/45">
@@ -60,7 +61,7 @@ export default function Footer() {
               O blogu
             </h2>
             <p className="text-sm leading-relaxed text-white/45">
-              Kulinarny blog z ręcznie wybranymi przepisami i wyszukiwaniem AI po bazie ponad 62&nbsp;000 dań z całego świata.
+              Blog z przepisami, które weszły do mojego życia na stałe.
             </p>
           </div>
         </div>

@@ -7,7 +7,7 @@ import { pluralKategoriaLabel } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Kategorie",
-  description: "Przeglądaj przepisy według kategorii na FlavourFind.",
+  description: "Przeglądaj przepisy według kategorii na kacperje.",
 }
 
 async function getCategoriesWithCount() {

@@ -7,7 +7,7 @@ import { pluralPrzepisLabel } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Wszystkie przepisy",
-  description: "Przeglądaj wszystkie przepisy na FlavourFind.",
+  description: "Przeglądaj wszystkie przepisy na kacperje.",
 }
 
 async function getAllRecipes() {
