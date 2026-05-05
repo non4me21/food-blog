@@ -116,6 +116,8 @@ export async function createRecipeAction(
   revalidatePath("/")
   revalidatePath("/przepisy")
   if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
+  revalidatePath("/sitemap.xml")
+  revalidatePath("/rss.xml")
   redirect("/admin")
 }
 
@@ -183,6 +185,8 @@ export async function updateRecipeAction(
   if (oldCategorySlug) revalidatePath(`/kategorie/${oldCategorySlug}`)
   if (newCategorySlug && newCategorySlug !== oldCategorySlug)
     revalidatePath(`/kategorie/${newCategorySlug}`)
+  revalidatePath("/sitemap.xml")
+  revalidatePath("/rss.xml")
   redirect("/admin")
 }
 
@@ -199,6 +203,8 @@ export async function deleteRecipeAction(id: number) {
   revalidatePath("/przepisy")
   if (recipe?.slug) revalidatePath(`/przepisy/${recipe.slug}`)
   if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
+  revalidatePath("/sitemap.xml")
+  revalidatePath("/rss.xml")
   redirect("/admin")
 }
 
@@ -218,6 +224,8 @@ export async function togglePublishedAction(id: number, published: boolean) {
   revalidatePath("/przepisy")
   if (recipe?.slug) revalidatePath(`/przepisy/${recipe.slug}`)
   if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
+  revalidatePath("/sitemap.xml")
+  revalidatePath("/rss.xml")
 }
 
 /* ── Categories ── */
@@ -250,6 +258,7 @@ export async function createCategoryAction(
 
   revalidatePath("/")
   revalidatePath("/kategorie")
+  revalidatePath("/sitemap.xml")
   redirect("/admin/categories")
 }
 
@@ -286,6 +295,7 @@ export async function updateCategoryAction(
   revalidatePath("/")
   revalidatePath("/kategorie")
   revalidatePath(`/kategorie/${slug}`)
+  revalidatePath("/sitemap.xml")
   redirect("/admin/categories")
 }
 
@@ -293,5 +303,6 @@ export async function deleteCategoryAction(id: number) {
   await db.delete(categories).where(eq(categories.id, id))
   revalidatePath("/")
   revalidatePath("/kategorie")
+  revalidatePath("/sitemap.xml")
   redirect("/admin/categories")
 }
