@@ -34,16 +34,6 @@ function toSlug(str: string): string {
     .replace(/-+/g, "-")
 }
 
-function isSafeNextPath(next: string | null): next is string {
-  if (!next) return false
-  try {
-    const url = new URL(next, "http://n")
-    return url.origin === "http://n" && url.pathname.startsWith("/slowik")
-  } catch {
-    return false
-  }
-}
-
 /* ── Auth ── */
 
 export async function loginAction(
@@ -69,7 +59,7 @@ export async function loginAction(
   })
 
   const next = formData.get("next") as string | null
-  redirect(isSafeNextPath(next) ? next : "/slowik")
+  redirect(next && next.startsWith("/slowik") ? next : "/slowik")
 }
 
 export async function logoutAction() {
