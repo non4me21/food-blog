@@ -8,6 +8,7 @@ on:
 jobs:
   revalidate:
     runs-on: ubuntu-latest
+    environment: production-no-approve
     steps:
       - name: Call revalidate endpoint
         env:
