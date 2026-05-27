@@ -1,17 +1,12 @@
 "use server"
 
 import { createHash } from "crypto"
-import { cookies, headers } from "next/headers"
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
 import { recipes, categories } from "@/db/schema"
 import { eq } from "drizzle-orm"
-import {
-  checkLoginRateLimit,
-  recordFailedLoginAttempt,
-  clearLoginRateLimit,
-} from "@/lib/loginRateLimit"
 
 async function getCategorySlug(categoryId: number | null): Promise<string | null> {
   if (!categoryId) return null
@@ -41,38 +36,18 @@ function toSlug(str: string): string {
 
 /* ── Auth ── */
 
-async function getClientIp(): Promise<string> {
-  const h = await headers()
-  const forwarded = h.get("x-forwarded-for")
-  if (forwarded) return forwarded.split(",")[0].trim()
-  return h.get("x-real-ip") ?? "unknown"
-}
-
 export async function loginAction(
   _prevState: string | null,
   formData: FormData
 ): Promise<string | null> {
-  const ip = await getClientIp()
-
-  const { blocked, retryAfterSeconds } = await checkLoginRateLimit(ip)
-  if (blocked) {
-    const minutes = Math.ceil((retryAfterSeconds ?? 900) / 60)
-    return `Zbyt wiele nieudanych prób. Spróbuj ponownie za ${minutes} min.`
-  }
-
   const login = (formData.get("login") as string) ?? ""
   const password = (formData.get("password") as string) ?? ""
   const adminLogin = process.env.ADMIN_LOGIN
   const adminPassword = process.env.ADMIN_PASSWORD
 
   if (!adminLogin || !adminPassword) return "Brak konfiguracji zmiennych środowiskowych."
+  if (login !== adminLogin || password !== adminPassword) return "Nieprawidłowe dane logowania."
 
-  if (login !== adminLogin || password !== adminPassword) {
-    await recordFailedLoginAttempt(ip)
-    return "Nieprawidłowe dane logowania."
-  }
-
-  await clearLoginRateLimit(ip)
   const token = computeSessionToken(adminLogin, adminPassword)
   const cookieStore = await cookies()
   cookieStore.set("admin_session", token, {
