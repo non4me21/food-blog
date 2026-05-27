@@ -14,4 +14,4 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL }}
           REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
         run: |
-          curl -sf "${SITE_URL}/api/revalidate?secret=${REVALIDATE_SECRET}"
+          curl -sf "$SITE_URL/api/revalidate?secret=$REVALIDATE_SECRET"
