@@ -5,8 +5,8 @@ import { logoutAction } from "./actions"
 export const dynamic = "force-dynamic"
 
 const NAV = [
-  { href: "/admin", label: "Przepisy", exact: true },
-  { href: "/admin/categories", label: "Kategorie", exact: false },
+  { href: "/slowik", label: "Przepisy", exact: true },
+  { href: "/slowik/categories", label: "Kategorie", exact: false },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -16,7 +16,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-6">
-            <Link href="/admin" className="flex items-center gap-2 font-bold text-gray-900 shrink-0">
+            <Link href="/slowik" className="flex items-center gap-2 font-bold text-gray-900 shrink-0">
               <Image
                 src="/logo.svg"
                 alt=""

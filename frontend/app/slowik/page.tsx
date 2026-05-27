@@ -34,7 +34,7 @@ export default async function AdminRecipesPage() {
           <p className="text-gray-500 text-sm mt-0.5">{allRecipes.length} łącznie</p>
         </div>
         <Link
-          href="/admin/recipes/new"
+          href="/slowik/recipes/new"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white text-sm transition-opacity hover:opacity-90"
           style={{ backgroundColor: "#1e6020" }}
         >
@@ -47,7 +47,7 @@ export default async function AdminRecipesPage() {
         <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
           <p className="text-gray-400 mb-4">Brak przepisów. Dodaj pierwszy!</p>
           <Link
-            href="/admin/recipes/new"
+            href="/slowik/recipes/new"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white text-sm"
             style={{ backgroundColor: "#1e6020" }}
           >
@@ -95,7 +95,7 @@ export default async function AdminRecipesPage() {
                   <td className="px-5 py-4 text-right">
                     <div className="flex items-center justify-end gap-4">
                       <Link
-                        href={`/admin/recipes/${recipe.id}/edit`}
+                        href={`/slowik/recipes/${recipe.id}/edit`}
                         className="text-sm font-medium text-green-700 hover:text-green-900 transition-colors"
                       >
                         Edytuj
