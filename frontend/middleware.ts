@@ -4,9 +4,9 @@ import type { NextRequest } from "next/server"
 const COOKIE_NAME = "admin_session"
 const LOGIN_PATH = "/admin/login"
 
-async function computeSessionToken(password: string): Promise<string> {
+async function computeSessionToken(login: string, password: string): Promise<string> {
   const encoder = new TextEncoder()
-  const data = encoder.encode(password + ":kacperje-admin-v1")
+  const data = encoder.encode(login + ":" + password + ":kacperje-admin-v1")
   const hashBuffer = await crypto.subtle.digest("SHA-256", data)
   return Array.from(new Uint8Array(hashBuffer))
     .map((b) => b.toString(16).padStart(2, "0"))
@@ -18,8 +18,9 @@ export async function middleware(request: NextRequest) {
 
   if (pathname === LOGIN_PATH) return NextResponse.next()
 
+  const adminLogin = process.env.ADMIN_LOGIN
   const adminPassword = process.env.ADMIN_PASSWORD
-  if (!adminPassword) {
+  if (!adminLogin || !adminPassword) {
     return NextResponse.redirect(new URL(LOGIN_PATH, request.url))
   }
 
@@ -30,7 +31,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  const expectedToken = await computeSessionToken(adminPassword)
+  const expectedToken = await computeSessionToken(adminLogin, adminPassword)
   if (sessionCookie.value !== expectedToken) {
     const loginUrl = new URL(LOGIN_PATH, request.url)
     loginUrl.searchParams.set("next", pathname)

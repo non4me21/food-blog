@@ -15,6 +15,22 @@ function LoginForm() {
       <input type="hidden" name="next" value={next} />
 
       <div>
+        <label htmlFor="login" className="block text-sm font-semibold text-gray-700 mb-1.5">
+          Login
+        </label>
+        <input
+          id="login"
+          name="login"
+          type="text"
+          required
+          autoFocus
+          autoComplete="username"
+          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent text-gray-900 placeholder-gray-400"
+          placeholder="admin"
+        />
+      </div>
+
+      <div>
         <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-1.5">
           Hasło
         </label>
@@ -23,7 +39,6 @@ function LoginForm() {
           name="password"
           type="password"
           required
-          autoFocus
           autoComplete="current-password"
           className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-700 focus:border-transparent text-gray-900 placeholder-gray-400"
           placeholder="••••••••"
