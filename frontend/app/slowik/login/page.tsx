@@ -3,7 +3,7 @@
 import { useActionState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Suspense } from "react"
-import { loginAction } from "@/app/admin/actions"
+import { loginAction } from "@/app/slowik/actions"
 
 function LoginForm() {
   const searchParams = useSearchParams()

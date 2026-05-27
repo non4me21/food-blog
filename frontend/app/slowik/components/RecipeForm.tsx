@@ -364,7 +364,7 @@ export default function RecipeForm({
         >
           {isPending ? "Zapisywanie…" : submitLabel}
         </button>
-        <a href="/admin" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+        <a href="/slowik" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
           Anuluj
         </a>
       </div>

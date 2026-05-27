@@ -121,7 +121,7 @@ export default function AddCategoryForm({ serverAction, defaultValues = {}, subm
         >
           {isPending ? "Zapisywanie…" : submitLabel}
         </button>
-        <a href="/admin/categories" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+        <a href="/slowik/categories" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
           Anuluj
         </a>
       </div>

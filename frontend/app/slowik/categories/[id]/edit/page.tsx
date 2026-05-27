@@ -2,7 +2,7 @@ import { db } from "@/db"
 import { categories } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { notFound } from "next/navigation"
-import { updateCategoryAction } from "@/app/admin/actions"
+import { updateCategoryAction } from "@/app/slowik/actions"
 import AddCategoryForm from "../../AddCategoryForm"
 
 export const metadata = { title: "Edytuj kategorię – Admin" }

@@ -1,8 +1,8 @@
 import { db } from "@/db"
 import { categories, recipes } from "@/db/schema"
 import { eq, count } from "drizzle-orm"
-import { deleteCategoryAction, createCategoryAction } from "@/app/admin/actions"
-import DeleteButton from "@/app/admin/components/DeleteButton"
+import { deleteCategoryAction, createCategoryAction } from "@/app/slowik/actions"
+import DeleteButton from "@/app/slowik/components/DeleteButton"
 import AddCategoryForm from "./AddCategoryForm"
 import { pluralPrzepisLabel } from "@/lib/utils"
 
@@ -54,7 +54,7 @@ export default async function CategoriesPage() {
                   <span className="text-xs text-gray-400 font-mono" title="Kolejność wyświetlania">#{cat.display_order}</span>
                   <span className="text-xs text-gray-400">{Number(cat.recipeCount)} {pluralPrzepisLabel(Number(cat.recipeCount))}</span>
                   <a
-                    href={`/admin/categories/${cat.id}/edit`}
+                    href={`/slowik/categories/${cat.id}/edit`}
                     className="text-xs font-semibold text-green-700 hover:text-green-900 transition-colors"
                   >
                     Edytuj

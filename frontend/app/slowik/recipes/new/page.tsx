@@ -1,8 +1,8 @@
 import Link from "next/link"
 import { db } from "@/db"
 import { categories } from "@/db/schema"
-import { createRecipeAction } from "@/app/admin/actions"
-import RecipeForm from "@/app/admin/components/RecipeForm"
+import { createRecipeAction } from "@/app/slowik/actions"
+import RecipeForm from "@/app/slowik/components/RecipeForm"
 
 export const metadata = { title: "Nowy przepis – Admin" }
 
@@ -12,7 +12,7 @@ export default async function NewRecipePage() {
   return (
     <div className="max-w-3xl">
       <div className="flex items-center gap-3 mb-6">
-        <Link href="/admin" className="text-gray-400 hover:text-gray-600 transition-colors">
+        <Link href="/slowik" className="text-gray-400 hover:text-gray-600 transition-colors">
           <ArrowLeftIcon />
         </Link>
         <h1 className="text-2xl font-black text-gray-900">Nowy przepis</h1>

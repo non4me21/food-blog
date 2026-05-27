@@ -59,13 +59,13 @@ export async function loginAction(
   })
 
   const next = formData.get("next") as string | null
-  redirect(next && next.startsWith("/admin") ? next : "/admin")
+  redirect(next && next.startsWith("/slowik") ? next : "/slowik")
 }
 
 export async function logoutAction() {
   const cookieStore = await cookies()
   cookieStore.delete("admin_session")
-  redirect("/admin/login")
+  redirect("/slowik/login")
 }
 
 /* ── Recipes ── */
@@ -124,7 +124,7 @@ export async function createRecipeAction(
   if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
   revalidatePath("/sitemap.xml")
   revalidatePath("/rss.xml")
-  redirect("/admin")
+  redirect("/slowik")
 }
 
 export async function updateRecipeAction(
@@ -197,7 +197,7 @@ export async function updateRecipeAction(
     revalidatePath(`/kategorie/${newCategorySlug}`)
   revalidatePath("/sitemap.xml")
   revalidatePath("/rss.xml")
-  redirect("/admin")
+  redirect("/slowik")
 }
 
 export async function deleteRecipeAction(id: number) {
@@ -215,7 +215,7 @@ export async function deleteRecipeAction(id: number) {
   if (categorySlug) revalidatePath(`/kategorie/${categorySlug}`)
   revalidatePath("/sitemap.xml")
   revalidatePath("/rss.xml")
-  redirect("/admin")
+  redirect("/slowik")
 }
 
 export async function togglePublishedAction(id: number, published: boolean) {
@@ -270,7 +270,7 @@ export async function createCategoryAction(
   revalidatePath("/")
   revalidatePath("/kategorie")
   revalidatePath("/sitemap.xml")
-  redirect("/admin/categories")
+  redirect("/slowik/categories")
 }
 
 export async function updateCategoryAction(
@@ -308,7 +308,7 @@ export async function updateCategoryAction(
   revalidatePath("/kategorie")
   revalidatePath(`/kategorie/${slug}`)
   revalidatePath("/sitemap.xml")
-  redirect("/admin/categories")
+  redirect("/slowik/categories")
 }
 
 export async function deleteCategoryAction(id: number) {
@@ -316,5 +316,5 @@ export async function deleteCategoryAction(id: number) {
   revalidatePath("/")
   revalidatePath("/kategorie")
   revalidatePath("/sitemap.xml")
-  redirect("/admin/categories")
+  redirect("/slowik/categories")
 }

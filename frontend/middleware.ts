@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 const COOKIE_NAME = "admin_session"
-const LOGIN_PATH = "/admin/login"
+const LOGIN_PATH = "/slowik/login"
 
 async function computeSessionToken(login: string, password: string): Promise<string> {
   const encoder = new TextEncoder()
@@ -42,5 +42,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/slowik/:path*"],
 }
